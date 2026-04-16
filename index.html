@@ -141,6 +141,23 @@
       pointer-events: none;
     }
 
+    .hero-wordmark {
+      position: absolute;
+      bottom: -0.1em;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: clamp(10rem, 22vw, 22rem);
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255,255,255,0.06);
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+      z-index: 1;
+      line-height: 1;
+    }
+
     .hero {
       position: relative;
       z-index: 2;
@@ -438,10 +455,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 1px;
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 16px;
-      overflow: hidden;
+      background: rgba(255,255,255,0.06);
     }
 
     .feature-card { background: #0f1c30; padding: 2rem; transition: background 0.15s; }
@@ -813,6 +827,7 @@
 <!-- ─── HERO ─── -->
 <section class="hero-section" id="waitlist">
   <canvas id="particle-canvas"></canvas>
+  <div class="hero-wordmark">GRADE</div>
 
   <div class="hero" id="hero-content">
     <div class="hero-badge">
@@ -1119,30 +1134,28 @@
   // ─── FORMSPREE ───────────────────────────────────────────────────────────────
   const FORMSPREE_ID = 'xkokjqev';
 
-  // ─── GLOBAL COUNTER via CountAPI ────────────────────────────────────────────
-  // Namespace is unique to this project. CountAPI is free, no auth required.
-  const COUNT_NS  = 'grade-landing';
-  const COUNT_KEY = 'waitlist-' + FORMSPREE_ID;
+  // ─── GLOBAL COUNTER via counterapi.dev ───────────────────────────────────────
+  const COUNT_KEY = 'grade-waitlist-' + FORMSPREE_ID;
 
   function setCounterDisplays(n) {
-    const label = n === null ? '—' : n.toLocaleString();
+    const label = (typeof n === 'number' && !isNaN(n)) ? n.toLocaleString() : '—';
     document.getElementById('hero-count').textContent = label;
     document.getElementById('cta-count').textContent  = label;
   }
 
   async function fetchCount() {
     try {
-      const r = await fetch(`https://api.countapi.xyz/get/${COUNT_NS}/${COUNT_KEY}`);
+      const r = await fetch(`https://api.counterapi.dev/v1/grade-pms/${COUNT_KEY}/get`);
       const d = await r.json();
-      if (typeof d.value === 'number') setCounterDisplays(d.value);
+      if (typeof d.count === 'number') setCounterDisplays(d.count);
     } catch {}
   }
 
   async function hitCount() {
     try {
-      const r = await fetch(`https://api.countapi.xyz/hit/${COUNT_NS}/${COUNT_KEY}`);
+      const r = await fetch(`https://api.counterapi.dev/v1/grade-pms/${COUNT_KEY}/up`);
       const d = await r.json();
-      if (typeof d.value === 'number') setCounterDisplays(d.value);
+      if (typeof d.count === 'number') setCounterDisplays(d.count);
     } catch {}
   }
 
