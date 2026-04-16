@@ -150,7 +150,7 @@
       font-weight: 800;
       letter-spacing: -0.05em;
       color: transparent;
-      -webkit-text-stroke: 1px rgba(255,255,255,0.06);
+      -webkit-text-stroke: 2px rgba(255,255,255,0.18);
       white-space: nowrap;
       pointer-events: none;
       user-select: none;
@@ -454,11 +454,20 @@
     .features-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1px;
-      background: rgba(255,255,255,0.06);
+      gap: 0;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.07);
     }
 
-    .feature-card { background: #0f1c30; padding: 2rem; transition: background 0.15s; }
+    .feature-card {
+      background: #0f1c30;
+      padding: 2rem;
+      transition: background 0.15s;
+      box-shadow:
+        1px 0 0 rgba(255,255,255,0.06),
+        0 1px 0 rgba(255,255,255,0.06);
+    }
     .feature-card:hover { background: #142038; }
     .feature-card h3 { color: white; font-size: 1rem; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 0.5rem; }
     .feature-card p  { font-size: 0.875rem; color: rgba(255,255,255,0.5); line-height: 1.65; }
@@ -477,48 +486,159 @@
     .icon-purple { background: rgba(124,58,237,0.2); color: #a78bfa; }
     .icon-orange { background: rgba(234,88,12,0.2);  color: #fb923c; }
 
-    /* ─── WORKFLOW SECTION ─── */
-    .workflow-section { background: #f0f6ff; padding: 96px 2rem; }
+    /* ─── TIMELINE (scroll-driven horizontal) ─── */
+    .timeline-section {
+      background: linear-gradient(180deg, #f0f6ff 0%, #e4eefd 100%);
+      position: relative;
+      height: 360vh;
+    }
 
-    .workflow-inner {
-      max-width: 1100px;
+    .timeline-sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .timeline-header {
+      padding: 5rem 2rem 1.5rem;
+      text-align: center;
+      flex-shrink: 0;
+      max-width: 720px;
       margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5rem;
+    }
+
+    .timeline-header .section-label { color: var(--accent); margin-bottom: 0.75rem; }
+    .timeline-header h2 {
+      font-size: clamp(1.75rem, 3.2vw, 2.4rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+    }
+    .timeline-header p {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    .timeline-viewport {
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+      display: flex;
       align-items: center;
     }
 
-    .workflow-stages { display: flex; flex-direction: column; }
-
-    .stage {
+    .timeline-track {
       display: flex;
-      align-items: flex-start;
-      gap: 1rem;
-      border-bottom: 1px solid #d4e4fa;
-      padding: 0.875rem 1rem;
-      margin: 0 -1rem;
-      border-radius: 8px;
-      transition: background 0.15s;
-      cursor: default;
+      align-items: center;
+      gap: 8rem;
+      padding: 0 14vw;
+      position: relative;
+      will-change: transform;
     }
 
-    .stage:last-child { border-bottom: none; }
-    .stage:hover { background: #e0eeff; }
+    .timeline-track::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: repeating-linear-gradient(
+        90deg,
+        rgba(37,99,235,0.4) 0,
+        rgba(37,99,235,0.4) 6px,
+        transparent 6px,
+        transparent 14px
+      );
+      transform: translateY(-50%);
+      z-index: 0;
+    }
 
-    .stage-num {
-      width: 26px; height: 26px;
-      border-radius: 50%;
-      background: var(--accent-light);
-      color: var(--accent);
-      font-size: 0.7rem;
+    .timeline-node {
+      position: relative;
+      flex-shrink: 0;
+      width: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 1;
+    }
+
+    .node-label {
+      position: absolute;
+      bottom: calc(50% + 36px);
+      left: 50%;
+      font-size: 0.95rem;
       font-weight: 700;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; margin-top: 1px;
+      color: var(--text);
+      white-space: nowrap;
+      transform: rotate(-38deg);
+      transform-origin: 0 100%;
+      background: white;
+      padding: 0.35rem 0.9rem;
+      border-radius: 8px;
+      border: 1px solid var(--accent-border);
+      box-shadow: 0 4px 14px rgba(37,99,235,0.12);
+      letter-spacing: -0.01em;
     }
 
-    .stage-info h4 { font-size: 0.9rem; font-weight: 600; color: var(--text); margin-bottom: 0.2rem; }
-    .stage-info p  { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
+    .node-dot {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: white;
+      border: 3px solid var(--accent);
+      color: var(--accent);
+      font-weight: 800;
+      font-size: 1.05rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 16px rgba(37,99,235,0.25);
+      position: relative;
+      z-index: 2;
+      transition: transform 0.2s;
+    }
+
+    .timeline-node:hover .node-dot { transform: scale(1.08); }
+
+    .node-desc {
+      margin-top: 1.5rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      text-align: center;
+      max-width: 180px;
+      line-height: 1.5;
+    }
+
+    .timeline-hint {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.72rem;
+      color: var(--text-subtle);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+      pointer-events: none;
+    }
+
+    .timeline-hint svg { animation: hintSlide 1.6s ease-in-out infinite; }
+
+    @keyframes hintSlide {
+      0%, 100% { transform: translateX(0); opacity: 0.5; }
+      50% { transform: translateX(4px); opacity: 1; }
+    }
 
     /* ─── VALUE SECTION ─── */
     .value-wrap {
@@ -639,11 +759,14 @@
       margin-bottom: 1.75rem;
     }
 
-    .copay-pills-row {
+    .copay-inputs {
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
-      margin-bottom: 0.75rem;
+      margin-bottom: 1.75rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px dashed rgba(255,255,255,0.08);
+      position: relative;
     }
 
     .data-pill {
@@ -654,73 +777,108 @@
       border-radius: 100px;
       font-size: 0.78rem;
       font-weight: 600;
+      font-family: 'Inter', sans-serif;
       opacity: 0;
-      transform: translateY(8px);
-      transition: opacity 0.4s ease, transform 0.4s ease;
+      transform: translateY(6px);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+      white-space: nowrap;
     }
 
-    .data-pill.blue   { background: rgba(37,99,235,0.2);  color: #93c5fd; border: 1px solid rgba(37,99,235,0.3); }
-    .data-pill.green  { background: rgba(5,150,105,0.2);  color: #6ee7b7; border: 1px solid rgba(5,150,105,0.3); }
-    .data-pill.teal   { background: rgba(8,145,178,0.2);  color: #67e8f9; border: 1px solid rgba(8,145,178,0.3); }
-    .data-pill.purple { background: rgba(124,58,237,0.2); color: #c4b5fd; border: 1px solid rgba(124,58,237,0.3); }
-    .data-pill.orange { background: rgba(234,88,12,0.2);  color: #fdba74; border: 1px solid rgba(234,88,12,0.3); }
-
+    .data-pill.blue   { background: rgba(37,99,235,0.22);  color: #93c5fd; border: 1px solid rgba(37,99,235,0.4); }
+    .data-pill.green  { background: rgba(5,150,105,0.22);  color: #6ee7b7; border: 1px solid rgba(5,150,105,0.4); }
+    .data-pill.teal   { background: rgba(8,145,178,0.22);  color: #67e8f9; border: 1px solid rgba(8,145,178,0.4); }
+    .data-pill.purple { background: rgba(124,58,237,0.22); color: #c4b5fd; border: 1px solid rgba(124,58,237,0.4); }
+    .data-pill.orange { background: rgba(234,88,12,0.22);  color: #fdba74; border: 1px solid rgba(234,88,12,0.4); }
     .data-pill.visible { opacity: 1; transform: translateY(0); }
 
-    .copay-arrow {
-      text-align: center;
-      color: rgba(255,255,255,0.2);
-      font-size: 1.25rem;
-      margin: 0.75rem 0;
-      opacity: 0;
-      transition: opacity 0.4s ease;
+    /* ─── LATEX-STYLE EQUATION ─── */
+    .copay-eq {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      font-family: 'Cambria Math', 'STIX Two Math', 'Latin Modern Math', Cambria, 'Times New Roman', serif;
+      font-size: 1.15rem;
+      color: rgba(255,255,255,0.85);
+      position: relative;
+      padding-top: 0.5rem;
     }
 
-    .copay-arrow.visible { opacity: 1; }
-
-    .copay-formula {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 12px;
-      padding: 1rem 1.25rem;
-      font-size: 0.8rem;
-      color: rgba(255,255,255,0.5);
-      font-family: 'SF Mono', 'Fira Code', monospace;
-      line-height: 1.8;
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      margin-bottom: 1rem;
-    }
-
-    .copay-formula.visible { opacity: 1; }
-    .copay-formula .hi { color: #60a5fa; }
-    .copay-formula .val { color: #34d399; font-weight: 700; }
-
-    .copay-result {
+    .copay-eq-row {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      background: linear-gradient(135deg, rgba(37,99,235,0.2), rgba(8,145,178,0.2));
-      border: 1px solid rgba(96,165,250,0.3);
-      border-radius: 12px;
-      padding: 1rem 1.25rem;
+      justify-content: center;
+      gap: 0.45rem;
+      flex-wrap: wrap;
       opacity: 0;
-      transition: opacity 0.5s ease;
+      transform: translateY(6px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
     }
 
-    .copay-result.visible { opacity: 1; }
+    .copay-eq-row.visible { opacity: 1; transform: translateY(0); }
 
-    .copay-result-label {
-      font-size: 0.8rem;
-      color: rgba(255,255,255,0.6);
+    .copay-eq .var {
+      font-style: italic;
+      color: #93c5fd;
       font-weight: 500;
     }
 
-    .copay-result-amount {
+    .copay-eq .op {
+      color: rgba(255,255,255,0.5);
+      font-weight: 500;
+    }
+
+    .copay-eq .num {
+      color: rgba(255,255,255,0.8);
+      font-style: italic;
+    }
+
+    .copay-eq .paren {
       font-size: 1.75rem;
+      color: rgba(255,255,255,0.35);
+      font-weight: 300;
+      line-height: 1;
+      display: inline-block;
+      transform: scaleY(1.25);
+    }
+
+    .frac {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      vertical-align: middle;
+      padding: 0 0.3rem;
+      line-height: 1.15;
+    }
+
+    .frac-num {
+      padding: 0 0.6rem 0.25rem;
+      border-bottom: 1.5px solid rgba(255,255,255,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 3rem;
+    }
+
+    .frac-den {
+      padding-top: 0.25rem;
+      color: rgba(255,255,255,0.55);
+      font-style: italic;
+    }
+
+    .copay-eq .data-pill {
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.22rem 0.65rem;
+      opacity: 1;
+      transform: none;
+    }
+
+    .copay-eq .data-pill.big {
+      font-size: 1.05rem;
+      padding: 0.5rem 1.1rem;
       font-weight: 800;
-      color: #34d399;
-      letter-spacing: -0.03em;
+      letter-spacing: -0.01em;
     }
 
     /* ─── CTA SECTION ─── */
@@ -793,8 +951,16 @@
       .section { padding: 64px 1.25rem; }
       .hero-strip { gap: 1rem; padding: 1rem 1.25rem 1.5rem; }
 
-      .workflow-inner,
-      .value-section { grid-template-columns: 1fr; gap: 2.5rem; }
+      .value-section,
+      .copay-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+
+      /* mobile: timeline falls back to horizontal overflow-scroll, no sticky */
+      .timeline-section { height: auto; }
+      .timeline-sticky { position: relative; height: auto; }
+      .timeline-header { padding: 3rem 1.25rem 1.5rem; }
+      .timeline-viewport { overflow-x: auto; overflow-y: hidden; padding: 4rem 0 2rem; -webkit-overflow-scrolling: touch; }
+      .timeline-track { transform: none !important; padding: 0 1.5rem; gap: 5rem; }
+      .timeline-hint { display: none; }
 
       .insurance-cards,
       .features-grid { grid-template-columns: 1fr; }
@@ -963,25 +1129,68 @@
   </div>
 </section>
 
-<!-- ─── WORKFLOW ─── -->
-<section class="workflow-section" id="workflow">
-  <div class="workflow-inner">
-    <div class="fade-up">
+<!-- ─── TIMELINE (scroll-driven horizontal) ─── -->
+<section class="timeline-section" id="workflow">
+  <div class="timeline-sticky">
+    <div class="timeline-header">
       <div class="section-label">Patient Workflow</div>
-      <h2 class="section-title">Every visit tracked,<br />start to finish</h2>
-      <p class="section-sub">Grade follows each patient through every stage of their visit — from the moment they book to the moment the claim is paid. Nothing falls through the cracks.</p>
+      <h2>Every visit tracked, start to finish</h2>
+      <p>Grade follows each patient through every stage — from intake to paid claim. Scroll to walk the timeline.</p>
     </div>
 
-    <div class="workflow-stages fade-up">
-      <div class="stage"><div class="stage-num">1</div><div class="stage-info"><h4>Intake</h4><p>Patient record created, insurance pre-verified automatically</p></div></div>
-      <div class="stage"><div class="stage-num">2</div><div class="stage-info"><h4>Scheduled</h4><p>Appointment booked with the right provider and procedure</p></div></div>
-      <div class="stage"><div class="stage-num">3</div><div class="stage-info"><h4>Confirmed</h4><p>Patient confirmation received, reminders sent automatically</p></div></div>
-      <div class="stage"><div class="stage-num">4</div><div class="stage-info"><h4>Checked In</h4><p>Patient arrived — front desk notified instantly</p></div></div>
-      <div class="stage"><div class="stage-num">5</div><div class="stage-info"><h4>In Treatment</h4><p>AI begins capturing clinical notes in real time</p></div></div>
-      <div class="stage"><div class="stage-num">6</div><div class="stage-info"><h4>Treatment Complete</h4><p>Notes finalized, chart updated, provider ready to review</p></div></div>
-      <div class="stage"><div class="stage-num">7</div><div class="stage-info"><h4>Billing</h4><p>Coverage calculated, claim coded and ready to submit</p></div></div>
-      <div class="stage"><div class="stage-num">8</div><div class="stage-info"><h4>Claim Submitted</h4><p>Grade tracks the claim and follows up automatically</p></div></div>
-      <div class="stage"><div class="stage-num">9</div><div class="stage-info"><h4>Closed</h4><p>Payment collected, visit complete, records archived</p></div></div>
+    <div class="timeline-viewport">
+      <div class="timeline-track" id="timeline-track">
+        <div class="timeline-node">
+          <div class="node-label">Intake</div>
+          <div class="node-dot">1</div>
+          <div class="node-desc">Patient record created, insurance pre-verified automatically</div>
+        </div>
+        <div class="timeline-node">
+          <div class="node-label">Scheduled</div>
+          <div class="node-dot">2</div>
+          <div class="node-desc">Appointment booked with the right provider and procedure</div>
+        </div>
+        <div class="timeline-node">
+          <div class="node-label">Confirmed</div>
+          <div class="node-dot">3</div>
+          <div class="node-desc">Confirmation received, reminders sent automatically</div>
+        </div>
+        <div class="timeline-node">
+          <div class="node-label">Checked In</div>
+          <div class="node-dot">4</div>
+          <div class="node-desc">Patient arrived — front desk notified instantly</div>
+        </div>
+        <div class="timeline-node">
+          <div class="node-label">In Treatment</div>
+          <div class="node-dot">5</div>
+          <div class="node-desc">AI begins capturing clinical notes in real time</div>
+        </div>
+        <div class="timeline-node">
+          <div class="node-label">Treatment Complete</div>
+          <div class="node-dot">6</div>
+          <div class="node-desc">Notes finalized, chart updated, provider ready to review</div>
+        </div>
+        <div class="timeline-node">
+          <div class="node-label">Billing</div>
+          <div class="node-dot">7</div>
+          <div class="node-desc">Coverage calculated, claim coded and ready to submit</div>
+        </div>
+        <div class="timeline-node">
+          <div class="node-label">Claim Submitted</div>
+          <div class="node-dot">8</div>
+          <div class="node-desc">Grade tracks the claim and follows up automatically</div>
+        </div>
+        <div class="timeline-node">
+          <div class="node-label">Closed</div>
+          <div class="node-dot">9</div>
+          <div class="node-desc">Payment collected, visit complete, records archived</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-hint">
+      Scroll
+      <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5h12M9 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </div>
   </div>
 </section>
@@ -1020,8 +1229,6 @@
     <div class="stat-card purple"><div class="stat-num purple" data-count="0" data-suffix="">0</div><div class="stat-label">Manual steps to submit a claim</div></div>
   </div>
 </section>
-
-</section>
 </div>
 
 <!-- ─── COPAY CALCULATOR VISUAL ─── -->
@@ -1037,25 +1244,49 @@
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#60a5fa" stroke-width="1.5"/><path d="M6 4v4M4 6h4" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round"/></svg>
         Live coverage calculation
       </div>
-      <div class="copay-pills-row">
-        <span class="data-pill blue" id="cp1">🏥 Plan: PPO</span>
+
+      <div class="copay-inputs">
+        <span class="data-pill blue" id="cp1">🏥 PPO</span>
         <span class="data-pill green" id="cp2">✓ Deductible met</span>
         <span class="data-pill teal" id="cp3">🦷 D2750 Crown</span>
       </div>
-      <div class="copay-pills-row">
-        <span class="data-pill purple" id="cp4">Coverage: 80%</span>
-        <span class="data-pill orange" id="cp5">Fee: $1,200</span>
-        <span class="data-pill blue" id="cp6">Max remaining: $800</span>
-      </div>
-      <div class="copay-arrow" id="cp-arrow">↓</div>
-      <div class="copay-formula" id="cp-formula">
-        <span class="hi">copay</span> = fee × (1 − coverage)<br/>
-        <span class="hi">copay</span> = <span class="val">$1,200</span> × (1 − <span class="val">0.80</span>)<br/>
-        <span class="hi">copay</span> = <span class="val">$1,200</span> × <span class="val">0.20</span>
-      </div>
-      <div class="copay-result" id="cp-result">
-        <span class="copay-result-label">Patient pays today</span>
-        <span class="copay-result-amount" id="cp-amount">$0</span>
+
+      <div class="copay-eq">
+        <div class="copay-eq-row" id="cpr1">
+          <span class="var">copay</span>
+          <span class="op">=</span>
+          <span class="paren">(</span>
+          <span class="num">1</span>
+          <span class="op">−</span>
+          <span class="frac">
+            <span class="frac-num"><span class="var">coverage</span></span>
+            <span class="frac-den">100</span>
+          </span>
+          <span class="paren">)</span>
+          <span class="op">×</span>
+          <span class="var">fee</span>
+        </div>
+
+        <div class="copay-eq-row" id="cpr2">
+          <span class="var">copay</span>
+          <span class="op">=</span>
+          <span class="paren">(</span>
+          <span class="num">1</span>
+          <span class="op">−</span>
+          <span class="frac">
+            <span class="frac-num"><span class="data-pill purple">80</span></span>
+            <span class="frac-den">100</span>
+          </span>
+          <span class="paren">)</span>
+          <span class="op">×</span>
+          <span class="data-pill orange">$1,200</span>
+        </div>
+
+        <div class="copay-eq-row" id="cpr3">
+          <span class="var">copay</span>
+          <span class="op">=</span>
+          <span class="data-pill green big" id="cp-amount">$240</span>
+        </div>
       </div>
     </div>
   </div>
@@ -1310,42 +1541,20 @@
 
   // ─── COPAY CALCULATOR ANIMATION ──────────────────────────────────────────────
   function runCopayAnimation() {
-    const ids  = ['cp1','cp2','cp3','cp4','cp5','cp6'];
-    const rest = ['cp-arrow','cp-formula','cp-result'];
+    const inputIds = ['cp1','cp2','cp3'];
+    const rowIds   = ['cpr1','cpr2','cpr3'];
 
-    // reset
-    [...ids, ...rest].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.classList.remove('visible');
-    });
-    const amt = document.getElementById('cp-amount');
-    if (amt) amt.textContent = '$0';
-
-    // stagger pills
-    ids.forEach((id, i) => {
-      setTimeout(() => {
-        const el = document.getElementById(id);
-        if (el) el.classList.add('visible');
-      }, 200 + i * 180);
+    [...inputIds, ...rowIds].forEach(id => {
+      document.getElementById(id)?.classList.remove('visible');
     });
 
-    // arrow + formula
-    setTimeout(() => document.getElementById('cp-arrow')?.classList.add('visible'), 1400);
-    setTimeout(() => document.getElementById('cp-formula')?.classList.add('visible'), 1700);
+    inputIds.forEach((id, i) => {
+      setTimeout(() => document.getElementById(id)?.classList.add('visible'), 200 + i * 160);
+    });
 
-    // result + count-up to $240
-    setTimeout(() => {
-      document.getElementById('cp-result')?.classList.add('visible');
-      if (!amt) return;
-      const target = 240, dur = 900, start = performance.now();
-      function tick(now) {
-        const p = Math.min((now - start) / dur, 1);
-        const eased = 1 - Math.pow(1 - p, 3);
-        amt.textContent = '$' + Math.round(eased * target);
-        if (p < 1) requestAnimationFrame(tick);
-      }
-      requestAnimationFrame(tick);
-    }, 2100);
+    rowIds.forEach((id, i) => {
+      setTimeout(() => document.getElementById(id)?.classList.add('visible'), 900 + i * 550);
+    });
   }
 
   const copayObserver = new IntersectionObserver(entries => {
@@ -1354,6 +1563,34 @@
 
   const copayEl = document.getElementById('copay-visual');
   if (copayEl) copayObserver.observe(copayEl);
+
+  // ─── HORIZONTAL TIMELINE (scroll-driven) ─────────────────────────────────────
+  (function () {
+    const section = document.querySelector('.timeline-section');
+    const track   = document.getElementById('timeline-track');
+    if (!section || !track) return;
+
+    let ticking = false;
+    function update() {
+      if (window.innerWidth <= 768) { track.style.transform = ''; return; }
+      const rect = section.getBoundingClientRect();
+      const scrollable = rect.height - window.innerHeight;
+      if (scrollable <= 0) return;
+      const progress = Math.max(0, Math.min(1, -rect.top / scrollable));
+      const maxTranslate = Math.max(0, track.scrollWidth - window.innerWidth);
+      track.style.transform = `translate3d(${-progress * maxTranslate}px, 0, 0)`;
+    }
+
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => { update(); ticking = false; });
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    update();
+  })();
 
   // ─── SCROLL ANIMATIONS ───────────────────────────────────────────────────────
   const observer = new IntersectionObserver(entries => {
