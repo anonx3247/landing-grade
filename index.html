@@ -1580,8 +1580,10 @@
   // ─── FORMSPREE ───────────────────────────────────────────────────────────────
   const FORMSPREE_ID = 'xkokjqev';
 
-  // ─── GLOBAL COUNTER via counterapi.dev ───────────────────────────────────────
-  const COUNT_KEY = 'grade-waitlist-' + FORMSPREE_ID;
+  // ─── GLOBAL COUNTER via abacus.jasoncameron.dev ──────────────────────────────
+  // (CounterAPI v1 was retired; v2 requires signup. Abacus is a free drop-in.)
+  const COUNTER_NS  = 'grade-pms';
+  const COUNTER_KEY = 'grade-waitlist-' + FORMSPREE_ID;
 
   function setCounterDisplays(n) {
     const label = (typeof n === 'number' && !isNaN(n)) ? n.toLocaleString() : '—';
@@ -1591,17 +1593,18 @@
 
   async function fetchCount() {
     try {
-      const r = await fetch(`https://api.counterapi.dev/v1/grade-pms/${COUNT_KEY}/get`);
+      const r = await fetch(`https://abacus.jasoncameron.dev/get/${COUNTER_NS}/${COUNTER_KEY}`);
+      if (!r.ok) return;
       const d = await r.json();
-      if (typeof d.count === 'number') setCounterDisplays(d.count);
+      if (typeof d.value === 'number') setCounterDisplays(d.value);
     } catch {}
   }
 
   async function hitCount() {
     try {
-      const r = await fetch(`https://api.counterapi.dev/v1/grade-pms/${COUNT_KEY}/up`);
+      const r = await fetch(`https://abacus.jasoncameron.dev/hit/${COUNTER_NS}/${COUNTER_KEY}`);
       const d = await r.json();
-      if (typeof d.count === 'number') setCounterDisplays(d.count);
+      if (typeof d.value === 'number') setCounterDisplays(d.value);
     } catch {}
   }
 
