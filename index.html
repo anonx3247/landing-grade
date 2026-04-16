@@ -66,18 +66,19 @@
     }
 
     .nav-logo {
-      font-size: 1.2rem;
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      color: white;
+      display: flex;
+      align-items: center;
       text-decoration: none;
-      transition: color 0.3s;
     }
 
-    nav.scrolled .nav-logo { color: var(--text); }
+    .nav-logo img {
+      height: 28px;
+      width: auto;
+      filter: brightness(0) invert(1);
+      transition: filter 0.3s;
+    }
 
-    .nav-logo span { color: #60a5fa; }
-    nav.scrolled .nav-logo span { color: var(--accent); }
+    nav.scrolled .nav-logo img { filter: none; }
 
     .nav-links {
       display: flex;
@@ -511,15 +512,21 @@
     .value-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 
     .stat-card {
-      background: var(--bg-subtle);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.5rem;
+      border-radius: 14px;
+      padding: 1.75rem 1.5rem;
+      position: relative;
+      overflow: hidden;
     }
 
+    .stat-card.blue   { background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 1px solid #bfdbfe; }
+    .stat-card.green  { background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 1px solid #a7f3d0; }
+    .stat-card.teal   { background: linear-gradient(135deg, #ecfeff 0%, #cffafe 100%); border: 1px solid #a5f3fc; }
+    .stat-card.purple { background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); border: 1px solid #ddd6fe; }
+
     .stat-num {
-      font-size: 2rem; font-weight: 800; letter-spacing: -0.04em;
-      color: var(--text); line-height: 1; margin-bottom: 0.4rem;
+      font-size: 2.25rem; font-weight: 800; letter-spacing: -0.04em;
+      line-height: 1; margin-bottom: 0.4rem;
+      transition: transform 0.1s;
     }
 
     .stat-num.blue   { color: var(--accent); }
@@ -602,8 +609,7 @@
       gap: 1rem;
     }
 
-    .footer-logo { font-size: 1rem; font-weight: 700; color: var(--text); letter-spacing: -0.03em; }
-    .footer-logo span { color: var(--accent); }
+    .footer-logo img { height: 24px; width: auto; }
 
     .footer-links { display: flex; gap: 1.5rem; list-style: none; }
     .footer-links a { font-size: 0.825rem; color: var(--text-muted); text-decoration: none; transition: color 0.15s; }
@@ -648,7 +654,7 @@
 
 <!-- ─── NAV ─── -->
 <nav id="nav">
-  <a href="#" class="nav-logo">Grade<span>.</span></a>
+  <a href="#" class="nav-logo"><img src="logo.svg" alt="Grade" /></a>
   <ul class="nav-links">
     <li><a href="#features">Features</a></li>
     <li><a href="#workflow">Workflow</a></li>
@@ -847,10 +853,10 @@
   </div>
 
   <div class="value-stats fade-up">
-    <div class="stat-card"><div class="stat-num blue">2 hrs</div><div class="stat-label">Saved on documentation per provider daily</div></div>
-    <div class="stat-card"><div class="stat-num green">100%</div><div class="stat-label">Insurance verified before every appointment</div></div>
-    <div class="stat-card"><div class="stat-num teal">9</div><div class="stat-label">Stages tracked per patient visit</div></div>
-    <div class="stat-card"><div class="stat-num purple">0</div><div class="stat-label">Manual steps to submit a claim</div></div>
+    <div class="stat-card blue"><div class="stat-num blue" data-count="2" data-suffix=" hrs">2 hrs</div><div class="stat-label">Saved on documentation per provider daily</div></div>
+    <div class="stat-card green"><div class="stat-num green" data-count="100" data-suffix="%">100%</div><div class="stat-label">Insurance verified before every appointment</div></div>
+    <div class="stat-card teal"><div class="stat-num teal" data-count="9" data-suffix="">9</div><div class="stat-label">Stages tracked per patient visit</div></div>
+    <div class="stat-card purple"><div class="stat-num purple" data-count="0" data-suffix="">0</div><div class="stat-label">Manual steps to submit a claim</div></div>
   </div>
 </section>
 
@@ -914,7 +920,7 @@
 
 <!-- ─── FOOTER ─── -->
 <footer>
-  <div class="footer-logo">Grade<span>.</span></div>
+  <div class="footer-logo"><img src="logo.svg" alt="Grade" /></div>
   <ul class="footer-links">
     <li><a href="#">Privacy</a></li>
     <li><a href="#">Terms</a></li>
@@ -1078,6 +1084,34 @@
     init();
     draw();
   })();
+
+  // ─── COUNT-UP ANIMATION ──────────────────────────────────────────────────────
+  function animateCount(el) {
+    const target = parseInt(el.dataset.count, 10);
+    const suffix = el.dataset.suffix || '';
+    if (target === 0) return; // "0" stays as-is — it's already dramatic
+    const duration = 1200;
+    const start = performance.now();
+    function tick(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      // ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(eased * target) + suffix;
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  const countObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.stat-num[data-count]').forEach(animateCount);
+        countObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.4 });
+
+  document.querySelectorAll('.value-stats').forEach(el => countObserver.observe(el));
 
   // ─── SCROLL ANIMATIONS ───────────────────────────────────────────────────────
   const observer = new IntersectionObserver(entries => {
