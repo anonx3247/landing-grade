@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grade — The Dental PMS Built for Speed</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #ffffff;
+      --bg-subtle: #f8fafc;
+      --bg-muted: #f1f5f9;
+      --border: #e2e8f0;
+      --border-subtle: #f1f5f9;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --text-subtle: #94a3b8;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --accent-light: #eff6ff;
+      --accent-border: #bfdbfe;
+      --teal: #0891b2;
+      --teal-light: #ecfeff;
+      --green: #059669;
+      --green-light: #ecfdf5;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      height: 60px;
+      background: rgba(255,255,255,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .nav-logo {
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-logo span {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    /* ─── BUTTONS ─── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.5rem 1.1rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-decoration: none;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-muted);
+    }
+
+    .btn-ghost:hover {
+      background: var(--bg-muted);
+      color: var(--text);
+    }
+
+    .btn-lg {
+      padding: 0.75rem 1.5rem;
+      font-size: 0.95rem;
+      border-radius: 10px;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      background: var(--bg-subtle);
+      border-color: var(--text-muted);
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      padding: 140px 2rem 100px;
+      text-align: center;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.3rem 0.8rem;
+      background: var(--accent-light);
+      border: 1px solid var(--accent-border);
+      border-radius: 100px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      margin-bottom: 1.75rem;
+    }
+
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      color: var(--text);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, #2563eb 0%, #0891b2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 560px;
+      margin: 0 auto 2.5rem;
+      font-weight: 400;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-note {
+      margin-top: 1.25rem;
+      font-size: 0.8rem;
+      color: var(--text-subtle);
+    }
+
+    /* ─── SOCIAL PROOF STRIP ─── */
+    .trust-strip {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 1.25rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.825rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .trust-icon {
+      width: 16px;
+      height: 16px;
+      color: var(--green);
+    }
+
+    /* ─── SECTION ─── */
+    .section {
+      padding: 96px 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    .section-sub {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 560px;
+      line-height: 1.7;
+    }
+
+    /* ─── FEATURES GRID ─── */
+    .features-intro {
+      max-width: 600px;
+      margin-bottom: 3.5rem;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .feature-card {
+      background: var(--bg);
+      padding: 2rem;
+      transition: background 0.15s;
+    }
+
+    .feature-card:hover {
+      background: var(--bg-subtle);
+    }
+
+    .feature-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.1rem;
+      font-size: 1.1rem;
+    }
+
+    .icon-blue { background: var(--accent-light); color: var(--accent); }
+    .icon-teal { background: var(--teal-light); color: var(--teal); }
+    .icon-green { background: var(--green-light); color: var(--green); }
+    .icon-purple { background: var(--purple-light); color: var(--purple); }
+
+    .feature-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-card p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    /* ─── WORKFLOW SECTION ─── */
+    .workflow-section {
+      background: var(--bg-subtle);
+      padding: 96px 2rem;
+    }
+
+    .workflow-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .workflow-stages {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .stage {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+      cursor: default;
+      transition: background 0.15s;
+      border-radius: 8px;
+      padding: 0.875rem 1rem;
+      margin: 0 -1rem;
+    }
+
+    .stage:last-child { border-bottom: none; }
+
+    .stage:hover { background: var(--bg-muted); }
+
+    .stage-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--accent-light);
+      color: var(--accent);
+      font-size: 0.7rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .stage-info h4 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.2rem;
+    }
+
+    .stage-info p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* ─── SPEED SECTION ─── */
+    .speed-section {
+      padding: 96px 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .speed-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .stat-card {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+
+    .stat-num {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+
+    .stat-num.blue { color: var(--accent); }
+    .stat-num.teal { color: var(--teal); }
+    .stat-num.green { color: var(--green); }
+    .stat-num.purple { color: var(--purple); }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* ─── INSURANCE ─── */
+    .insurance-section {
+      background: var(--bg-subtle);
+      padding: 96px 2rem;
+    }
+
+    .insurance-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .insurance-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-top: 3rem;
+    }
+
+    .insurance-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.75rem;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+
+    .insurance-card:hover {
+      box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+      transform: translateY(-2px);
+    }
+
+    .insurance-card .ic-icon {
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+    }
+
+    .insurance-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.01em;
+    }
+
+    .insurance-card p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    /* ─── CTA SECTION ─── */
+    .cta-section {
+      padding: 100px 2rem;
+      text-align: center;
+    }
+
+    .cta-inner {
+      max-width: 700px;
+      margin: 0 auto;
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a6e 100%);
+      border-radius: 24px;
+      padding: 64px 48px;
+      color: white;
+    }
+
+    .cta-inner h2 {
+      font-size: clamp(1.75rem, 3vw, 2.5rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .cta-inner p {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 2rem;
+      line-height: 1.7;
+    }
+
+    .btn-white {
+      background: white;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .btn-white:hover {
+      background: #f0f9ff;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    }
+
+    .btn-white-ghost {
+      background: transparent;
+      color: rgba(255,255,255,0.8);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .btn-white-ghost:hover {
+      background: rgba(255,255,255,0.08);
+      color: white;
+    }
+
+    .cta-note {
+      margin-top: 1.25rem;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.4);
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1100px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-logo {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.03em;
+    }
+
+    .footer-logo span { color: var(--accent); }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 0.825rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .footer-links a:hover { color: var(--text); }
+
+    .footer-copy {
+      font-size: 0.78rem;
+      color: var(--text-subtle);
+    }
+
+    /* ─── ANIMATIONS ─── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      nav { padding: 0 1.25rem; }
+      .nav-links { display: none; }
+      .hero { padding: 100px 1.25rem 60px; }
+
+      .section { padding: 64px 1.25rem; }
+
+      .workflow-inner,
+      .speed-section {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+
+      .insurance-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cta-inner {
+        padding: 40px 24px;
+      }
+
+      footer {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 2rem 1.25rem;
+      }
+
+      .trust-strip {
+        gap: 1.25rem;
+        justify-content: flex-start;
+        padding: 1.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav>
+  <a href="#" class="nav-logo">Grade<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#workflow">Workflow</a></li>
+    <li><a href="#insurance">Insurance</a></li>
+  </ul>
+  <div class="nav-cta">
+    <a href="#" class="btn btn-ghost">Sign in</a>
+    <a href="#" class="btn btn-primary">Get started</a>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-badge">
+    <div class="hero-badge-dot"></div>
+    Now in early access
+  </div>
+  <h1>The dental PMS your<br /><em>practice deserves</em></h1>
+  <p class="hero-sub">
+    Grade is a cloud-native practice management system built for speed. Manage patients, providers, appointments, and insurance — all from one beautifully fast platform.
+  </p>
+  <div class="hero-actions">
+    <a href="#" class="btn btn-primary btn-lg">
+      Start free trial
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <a href="#" class="btn btn-outline btn-lg">See a demo</a>
+  </div>
+  <p class="hero-note">No credit card required &nbsp;·&nbsp; Free for 30 days</p>
+</section>
+
+<!-- ─── TRUST STRIP ─── -->
+<div class="trust-strip">
+  <div class="trust-item">
+    <svg class="trust-icon" viewBox="0 0 16 16" fill="none">
+      <path d="M13 4L6.5 10.5 3 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    HIPAA-conscious architecture
+  </div>
+  <div class="trust-item">
+    <svg class="trust-icon" viewBox="0 0 16 16" fill="none">
+      <path d="M13 4L6.5 10.5 3 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Real-time insurance verification
+  </div>
+  <div class="trust-item">
+    <svg class="trust-icon" viewBox="0 0 16 16" fill="none">
+      <path d="M13 4L6.5 10.5 3 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    ADA procedure code support
+  </div>
+  <div class="trust-item">
+    <svg class="trust-icon" viewBox="0 0 16 16" fill="none">
+      <path d="M13 4L6.5 10.5 3 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Multi-practice ready
+  </div>
+</div>
+
+<!-- ─── FEATURES ─── -->
+<section class="section" id="features">
+  <div class="features-intro fade-up">
+    <div class="section-label">Features</div>
+    <h2 class="section-title">Everything your practice needs, nothing it doesn't</h2>
+    <p class="section-sub">Purpose-built for modern dental practices. Every feature is designed around speed, clarity, and the real workflows your team uses every day.</p>
+  </div>
+
+  <div class="features-grid fade-up">
+    <div class="feature-card">
+      <div class="feature-icon icon-blue">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <circle cx="10" cy="7" r="4" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M3 17c0-3.314 3.134-6 7-6s7 2.686 7 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h3>Patient Management</h3>
+      <p>Full patient records with DOB, contact info, insurance, and soft-delete. GIN-indexed full-text search finds any patient instantly.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon icon-teal">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <rect x="3" y="3" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+          <rect x="11" y="3" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+          <rect x="3" y="11" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+          <rect x="11" y="11" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <h3>Provider Profiles</h3>
+      <p>Manage your team with NPI validation, specialty tracking, and active/inactive status. List and filter with a single API call.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon icon-green">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <rect x="3" y="4" width="14" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M7 3v2M13 3v2M3 9h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h3>Appointment Scheduling</h3>
+      <p>Link appointments to patients, providers, and ADA procedure codes. Designed for fast booking with minimal friction.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon icon-purple">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M10 3v14M3 10h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <h3>Insurance Tracking</h3>
+      <p>Carrier, member ID, group number, and pVerify payer codes per patient. Family subscriber and guarantor relationships built in.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon icon-blue">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M10 3L3 8v9h5v-4h4v4h5V8L10 3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h3>Multi-Practice Support</h3>
+      <p>One platform, multiple locations. Practices are first-class entities — scale from a single office to a DSO without re-architecting.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon icon-teal">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M5 10l3 3 7-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <h3>Audit & Compliance</h3>
+      <p>Every stage transition is logged in the patient workflow event table. Full audit trail out of the box — no extra configuration.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── WORKFLOW ─── -->
+<section class="workflow-section" id="workflow">
+  <div class="workflow-inner">
+    <div class="fade-up">
+      <div class="section-label">Patient Workflow</div>
+      <h2 class="section-title">Every visit, every stage — tracked</h2>
+      <p class="section-sub">Grade follows each patient through a 9-stage lifecycle from intake to close. No more sticky notes or status spreadsheets.</p>
+    </div>
+
+    <div class="workflow-stages fade-up">
+      <div class="stage">
+        <div class="stage-num">1</div>
+        <div class="stage-info">
+          <h4>Intake</h4>
+          <p>New patient captured and record created</p>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="stage-num">2</div>
+        <div class="stage-info">
+          <h4>Scheduled</h4>
+          <p>Appointment booked with provider and ADA code</p>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="stage-num">3</div>
+        <div class="stage-info">
+          <h4>Confirmed</h4>
+          <p>Patient confirmation received</p>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="stage-num">4</div>
+        <div class="stage-info">
+          <h4>Checked In</h4>
+          <p>Patient arrived at practice</p>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="stage-num">5</div>
+        <div class="stage-info">
+          <h4>In Treatment</h4>
+          <p>Provider has started the appointment</p>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="stage-num">6</div>
+        <div class="stage-info">
+          <h4>Treatment Complete</h4>
+          <p>Clinical work finished, notes pending</p>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="stage-num">7</div>
+        <div class="stage-info">
+          <h4>Billing</h4>
+          <p>Claim ready to submit to insurance</p>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="stage-num">8</div>
+        <div class="stage-info">
+          <h4>Claim Submitted</h4>
+          <p>EOB tracking in progress</p>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="stage-num">9</div>
+        <div class="stage-info">
+          <h4>Closed</h4>
+          <p>Payment collected, visit finalized</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SPEED ─── -->
+<section class="speed-section fade-up">
+  <div>
+    <div class="section-label">Built for Speed</div>
+    <h2 class="section-title">Fast where it matters most</h2>
+    <p class="section-sub">
+      Every part of Grade is engineered for performance. Optimistic UI updates, Redis caching, GIN-indexed search, and a service-worker-powered frontend that feels like a local app — even over slow connections.
+    </p>
+    <div style="margin-top: 2rem; display: flex; flex-direction: column; gap: 0.75rem;">
+      <div style="display:flex; align-items:center; gap: 0.625rem; font-size: 0.875rem; color: var(--text-muted);">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13 4L6.5 10.5 3 7" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Instant screen transitions with optimistic updates
+      </div>
+      <div style="display:flex; align-items:center; gap: 0.625rem; font-size: 0.875rem; color: var(--text-muted);">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13 4L6.5 10.5 3 7" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Redis-backed caching for sub-10ms repeated reads
+      </div>
+      <div style="display:flex; align-items:center; gap: 0.625rem; font-size: 0.875rem; color: var(--text-muted);">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13 4L6.5 10.5 3 7" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        GIN full-text search across all patient records
+      </div>
+      <div style="display:flex; align-items:center; gap: 0.625rem; font-size: 0.875rem; color: var(--text-muted);">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13 4L6.5 10.5 3 7" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        IndexedDB local cache for offline resilience
+      </div>
+    </div>
+  </div>
+
+  <div class="speed-stats fade-up">
+    <div class="stat-card">
+      <div class="stat-num blue">&lt;50ms</div>
+      <div class="stat-label">Median API latency</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num teal">50+</div>
+      <div class="stat-label">ADA procedure codes</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num green">9</div>
+      <div class="stat-label">Workflow stages</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num purple">∞</div>
+      <div class="stat-label">Practices supported</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── INSURANCE ─── -->
+<section class="insurance-section" id="insurance">
+  <div class="insurance-inner">
+    <div class="fade-up" style="max-width:600px">
+      <div class="section-label">Insurance</div>
+      <h2 class="section-title">Family coverage done right</h2>
+      <p class="section-sub">Grade models insurance the way it works in real life — with proper subscriber, guarantor, and dependent relationships that actually reflect your patients' situations.</p>
+    </div>
+
+    <div class="insurance-cards fade-up">
+      <div class="insurance-card">
+        <div class="ic-icon">🏥</div>
+        <h3>pVerify Integration</h3>
+        <p>Real-time eligibility checks with pVerify payer codes stored per patient. Verify coverage before the patient even sits down.</p>
+      </div>
+
+      <div class="insurance-card">
+        <div class="ic-icon">👨‍👩‍👧</div>
+        <h3>Family Relationships</h3>
+        <p>Model parent as primary subscriber, child as dependent. Guarantor assignments keep billing accountable — with full FK validation.</p>
+      </div>
+
+      <div class="insurance-card">
+        <div class="ic-icon">🔒</div>
+        <h3>Data Integrity</h3>
+        <p>Every subscriber and guarantor reference is validated. Invalid IDs are rejected with a 422 — your database stays clean.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CTA ─── -->
+<section class="cta-section">
+  <div class="cta-inner fade-up">
+    <h2>Ready to modernize your practice?</h2>
+    <p>Join practices already running on Grade. Setup takes minutes — and your team will notice the difference on day one.</p>
+    <div style="display:flex; justify-content:center; gap:0.75rem; flex-wrap:wrap;">
+      <a href="#" class="btn btn-white btn-lg">Start free trial</a>
+      <a href="#" class="btn btn-white-ghost btn-lg">Book a demo</a>
+    </div>
+    <p class="cta-note">30-day free trial &nbsp;·&nbsp; No credit card required &nbsp;·&nbsp; Cancel anytime</p>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-logo">Grade<span>.</span></div>
+  <ul class="footer-links">
+    <li><a href="#">Privacy</a></li>
+    <li><a href="#">Terms</a></li>
+    <li><a href="#">Status</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <p class="footer-copy">&copy; 2026 Grade. All rights reserved.</p>
+</footer>
+
+<!-- ─── SCROLL ANIMATIONS ─── -->
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
