@@ -558,15 +558,16 @@
     .insurance-card p  { font-size: 0.85rem; color: var(--text-muted); line-height: 1.65; }
 
     /* ─── CTA SECTION ─── */
-    .cta-section { padding: 100px 2rem; text-align: center; }
+    .cta-section {
+      padding: 100px 2rem;
+      text-align: center;
+      background: linear-gradient(135deg, #0a1020 0%, #0f2350 100%);
+      color: white;
+    }
 
     .cta-inner {
       max-width: 680px;
       margin: 0 auto;
-      background: linear-gradient(135deg, #0f172a 0%, #1e3a6e 100%);
-      border-radius: 24px;
-      padding: 64px 48px;
-      color: white;
     }
 
     .cta-inner h2 {
@@ -575,6 +576,7 @@
       letter-spacing: -0.03em;
       line-height: 1.2;
       margin-bottom: 1rem;
+      color: white;
     }
 
     .cta-inner p {
@@ -882,8 +884,8 @@
 </section>
 
 <!-- ─── CTA ─── -->
-<section class="cta-section">
-  <div class="cta-inner fade-up">
+<section class="cta-section fade-up">
+  <div class="cta-inner">
     <h2>Be first to experience Grade</h2>
     <p>We're building something dental practices have needed for a long time. Join the waitlist and get early access when we launch.</p>
 
