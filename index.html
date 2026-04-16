@@ -6,7 +6,7 @@
   <title>Grade — The AI-Powered Dental PMS</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -141,21 +141,34 @@
       pointer-events: none;
     }
 
-    .hero-wordmark {
-      position: absolute;
-      bottom: -0.1em;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: clamp(10rem, 22vw, 22rem);
-      font-weight: 800;
-      letter-spacing: -0.05em;
-      color: transparent;
-      -webkit-text-stroke: 2px rgba(255,255,255,0.18);
-      white-space: nowrap;
-      pointer-events: none;
-      user-select: none;
-      z-index: 1;
+    /* brand wordmark (nav + footer): sits next to the logo */
+    .nav-logo { gap: 0.55rem; }
+
+    .nav-wordmark {
+      font-family: 'Space Grotesk', 'Inter', -apple-system, sans-serif;
+      font-weight: 700;
+      font-size: 1.15rem;
       line-height: 1;
+      letter-spacing: -0.015em;
+      color: white;
+      transition: color 0.3s;
+    }
+
+    nav.scrolled .nav-wordmark { color: var(--text); }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .footer-wordmark {
+      font-family: 'Space Grotesk', 'Inter', -apple-system, sans-serif;
+      font-weight: 700;
+      font-size: 1.35rem;
+      line-height: 1;
+      letter-spacing: -0.015em;
+      color: var(--text);
     }
 
     .hero {
@@ -436,78 +449,358 @@
       line-height: 1.7;
     }
 
-    /* ─── FEATURES GRID ─── */
+    /* ─── FEATURES (BENTO) ─── */
     #features {
       max-width: 100%;
       background: #0c1422;
       padding: 96px 0;
+      position: relative;
+      overflow: hidden;
     }
 
-    #features .features-intro { max-width: 600px; margin: 0 auto 3.5rem; padding: 0 2rem; }
-    #features .features-grid  { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
-    #features .section-label  { color: #60a5fa; }
+    #features::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 50% 50% at 20% 0%, rgba(37,99,235,0.10), transparent 70%),
+        radial-gradient(ellipse 40% 40% at 80% 100%, rgba(124,58,237,0.08), transparent 70%);
+      pointer-events: none;
+    }
+
+    #features .features-intro {
+      max-width: 640px;
+      margin: 0 auto 3rem;
+      padding: 0 2rem;
+      text-align: center;
+      position: relative;
+    }
+    #features .features-intro .section-sub { margin: 0 auto; }
+    #features .section-label  { color: #60a5fa; display: inline-block; }
     #features .section-title  { color: white; }
     #features .section-sub    { color: rgba(255,255,255,0.55); }
 
-    .features-intro { max-width: 600px; margin-bottom: 3.5rem; }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 0;
-      border-radius: 14px;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.07);
-    }
-
-    .feature-card {
-      background: #0f1c30;
-      padding: 2rem;
-      transition: background 0.15s;
-      box-shadow:
-        1px 0 0 rgba(255,255,255,0.06),
-        0 1px 0 rgba(255,255,255,0.06);
-    }
-    .feature-card:hover { background: #142038; }
-    .feature-card h3 { color: white; font-size: 1rem; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 0.5rem; }
-    .feature-card p  { font-size: 0.875rem; color: rgba(255,255,255,0.5); line-height: 1.65; }
-
-    .feature-icon {
-      width: 40px; height: 40px;
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 1.1rem;
-      font-size: 1.1rem;
-    }
-
-    .icon-blue   { background: rgba(37,99,235,0.2);  color: #60a5fa; }
-    .icon-teal   { background: rgba(8,145,178,0.2);  color: #22d3ee; }
-    .icon-green  { background: rgba(5,150,105,0.2);  color: #34d399; }
-    .icon-purple { background: rgba(124,58,237,0.2); color: #a78bfa; }
-    .icon-orange { background: rgba(234,88,12,0.2);  color: #fb923c; }
-
-    /* ─── TIMELINE (scroll-driven horizontal) ─── */
-    .timeline-section {
-      background: linear-gradient(180deg, #f0f6ff 0%, #e4eefd 100%);
+    .features-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem;
       position: relative;
-      height: 360vh;
     }
 
-    .timeline-sticky {
-      position: sticky;
-      top: 0;
-      height: 100vh;
+    .features-bento {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: minmax(200px, auto);
+      gap: 1rem;
+    }
+
+    .bento-card {
+      background: linear-gradient(180deg, rgba(26,40,72,0.55) 0%, rgba(12,20,34,0.9) 100%);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 18px;
+      padding: 1.75rem;
+      position: relative;
       overflow: hidden;
+      transition: transform 0.25s ease, border-color 0.25s ease;
       display: flex;
       flex-direction: column;
     }
 
-    .timeline-header {
-      padding: 5rem 2rem 1.5rem;
-      text-align: center;
+    .bento-card::after {
+      content: '';
+      position: absolute;
+      top: -40%;
+      right: -30%;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(96,165,250,0.10), transparent 70%);
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .bento-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(96,165,250,0.3);
+    }
+
+    .bento-card.feature {
+      grid-column: 1 / span 2;
+      grid-row: 1 / span 2;
+      padding: 2.25rem;
+    }
+
+    .bento-card h3 {
+      color: white;
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      margin-bottom: 0.5rem;
+      position: relative;
+    }
+
+    .bento-card.feature h3 {
+      font-size: 1.6rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .bento-card p {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.6;
+      position: relative;
+    }
+
+    .bento-card.feature p {
+      font-size: 0.95rem;
+      max-width: 440px;
+      line-height: 1.7;
+    }
+
+    .feature-icon {
+      width: 42px; height: 42px;
+      border-radius: 11px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.1rem;
+      position: relative;
+    }
+    .bento-card.feature .feature-icon { width: 48px; height: 48px; margin-bottom: 1.35rem; }
+
+    .icon-blue   { background: rgba(37,99,235,0.22);  color: #60a5fa; border: 1px solid rgba(96,165,250,0.25); }
+    .icon-teal   { background: rgba(8,145,178,0.22);  color: #22d3ee; border: 1px solid rgba(34,211,238,0.25); }
+    .icon-green  { background: rgba(5,150,105,0.22);  color: #34d399; border: 1px solid rgba(52,211,153,0.25); }
+    .icon-purple { background: rgba(124,58,237,0.22); color: #a78bfa; border: 1px solid rgba(167,139,250,0.25); }
+    .icon-orange { background: rgba(234,88,12,0.22);  color: #fb923c; border: 1px solid rgba(251,146,60,0.25); }
+
+    /* ─── BENTO INLINE VISUALS ─── */
+
+    /* SOAP note mockup (AI Clinical Notes) */
+    .notes-mockup {
+      margin-top: 1.5rem;
+      position: relative;
+    }
+    .mock-window {
+      background: #080f1c;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 18px 50px -20px rgba(0,0,0,0.6);
+    }
+    .mock-title-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.55rem 0.9rem;
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .mock-dot { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,0.12); }
+    .mock-dot.red    { background: #ef4444; }
+    .mock-dot.yellow { background: #f59e0b; }
+    .mock-dot.green  { background: #10b981; }
+    .mock-filename {
+      font-family: 'SF Mono', 'Menlo', 'Fira Code', monospace;
+      font-size: 0.68rem;
+      color: rgba(255,255,255,0.35);
+      margin-left: auto;
+    }
+    .mock-body {
+      padding: 0.95rem 1.1rem 1.1rem;
+      font-family: 'SF Mono', 'Menlo', 'Fira Code', monospace;
+      font-size: 0.76rem;
+      line-height: 1.8;
+      min-height: 140px;
+    }
+    .mock-line {
+      display: flex;
+      gap: 0.65rem;
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    .mock-line.revealed { animation: typeLine 0.45s cubic-bezier(0.22,1,0.36,1) forwards; }
+    @keyframes typeLine {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .mock-label {
+      color: #60a5fa;
+      font-weight: 700;
       flex-shrink: 0;
-      max-width: 720px;
-      margin: 0 auto;
+      min-width: 2.4rem;
+    }
+    .mock-text { color: rgba(255,255,255,0.7); }
+    .mock-cursor {
+      display: inline-block;
+      width: 6px;
+      height: 12px;
+      background: #60a5fa;
+      vertical-align: -2px;
+      margin-left: 3px;
+      animation: blinkCursor 1s step-end infinite;
+    }
+    @keyframes blinkCursor {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* verified badge (Insurance) */
+    .verified-badge {
+      margin-top: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.75rem;
+      background: rgba(5,150,105,0.15);
+      border: 1px solid rgba(5,150,105,0.4);
+      border-radius: 100px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #6ee7b7;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      width: fit-content;
+    }
+    .verified-badge .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #10b981;
+      animation: pulse 1.8s infinite;
+    }
+
+    /* claim flow (Billing) */
+    .bill-flow {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding-top: 1rem;
+      flex-wrap: wrap;
+    }
+    .bill-step {
+      font-size: 0.64rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.5);
+      padding: 0.3rem 0.55rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 6px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .bill-step.done {
+      color: #6ee7b7;
+      border-color: rgba(5,150,105,0.35);
+      background: rgba(5,150,105,0.12);
+    }
+    .bill-arrow { color: rgba(255,255,255,0.2); flex-shrink: 0; }
+
+    /* coverage bar */
+    .cov-bar {
+      margin-top: auto;
+      height: 10px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 100px;
+      overflow: hidden;
+      display: flex;
+    }
+    .cov-ins { background: linear-gradient(90deg, #3b82f6, #60a5fa); flex: 4; }
+    .cov-pat { background: linear-gradient(90deg, #a78bfa, #c4b5fd); flex: 1; }
+    .cov-labels {
+      margin-top: 0.55rem;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.55);
+      font-weight: 500;
+    }
+    .cov-labels b { font-weight: 800; letter-spacing: -0.01em; }
+    .cov-labels b.b-ins { color: #60a5fa; }
+    .cov-labels b.b-pat { color: #c4b5fd; }
+
+    /* avatars (Patient & Family) */
+    .avatars {
+      margin-top: auto;
+      display: flex;
+      padding-top: 1rem;
+    }
+    .avatar {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: white;
+      border: 2px solid #0e182a;
+      margin-left: -8px;
+      letter-spacing: -0.02em;
+    }
+    .avatar:first-child { margin-left: 0; }
+    .avatar.a1 { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+    .avatar.a2 { background: linear-gradient(135deg, #10b981, #047857); }
+    .avatar.a3 { background: linear-gradient(135deg, #f59e0b, #b45309); }
+    .avatar.a4 { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+    .avatar.more {
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.65);
+    }
+
+    /* locations (Multi-Practice) */
+    .locations {
+      margin-top: auto;
+      position: relative;
+      height: 72px;
+      padding-top: 1rem;
+    }
+    .loc {
+      position: absolute;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: #60a5fa;
+      box-shadow: 0 0 0 4px rgba(96,165,250,0.18);
+    }
+    .loc::after {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(96,165,250,0.5);
+      animation: pulseRing 2.2s ease-out infinite;
+    }
+    .loc.l2::after { animation-delay: 0.7s; }
+    .loc.l3::after { animation-delay: 1.4s; }
+    @keyframes pulseRing {
+      0%   { transform: scale(1); opacity: 0.7; }
+      100% { transform: scale(2.8); opacity: 0; }
+    }
+    .loc.l1 { top: 18px; left: 18%; }
+    .loc.l2 { top: 40px; left: 52%; }
+    .loc.l3 { top: 12px; left: 82%; }
+    .loc-line {
+      position: absolute;
+      top: 50%;
+      left: 0; right: 0;
+      height: 1px;
+      background: repeating-linear-gradient(
+        90deg,
+        rgba(96,165,250,0.25) 0,
+        rgba(96,165,250,0.25) 3px,
+        transparent 3px,
+        transparent 8px
+      );
+      z-index: -1;
+    }
+
+    /* ─── TIMELINE (serpentine — winds through 3 rows) ─── */
+    .timeline-section {
+      background: linear-gradient(180deg, #f0f6ff 0%, #e4eefd 100%);
+      padding: 96px 2rem;
+      position: relative;
+    }
+
+    .timeline-header {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 4rem;
     }
 
     .timeline-header .section-label { color: var(--accent); margin-bottom: 0.75rem; }
@@ -523,72 +816,42 @@
       font-size: 1rem;
       color: var(--text-muted);
       line-height: 1.65;
+      max-width: 560px;
+      margin: 0 auto;
     }
 
-    .timeline-viewport {
-      flex: 1;
-      overflow: hidden;
+    .serpentine {
       position: relative;
-      display: flex;
-      align-items: center;
+      max-width: 1000px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 170px);
+      row-gap: 2.5rem;
+      column-gap: 1rem;
     }
 
-    .timeline-track {
-      display: flex;
-      align-items: center;
-      gap: 8rem;
-      padding: 0 14vw;
-      position: relative;
-      will-change: transform;
-    }
-
-    .timeline-track::before {
-      content: '';
+    .serpentine-path {
       position: absolute;
-      top: 50%;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: repeating-linear-gradient(
-        90deg,
-        rgba(37,99,235,0.4) 0,
-        rgba(37,99,235,0.4) 6px,
-        transparent 6px,
-        transparent 14px
-      );
-      transform: translateY(-50%);
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
       z-index: 0;
+      overflow: visible;
     }
 
-    .timeline-node {
-      position: relative;
-      flex-shrink: 0;
-      width: 200px;
+    .s-node {
       display: flex;
       flex-direction: column;
       align-items: center;
+      text-align: center;
+      position: relative;
       z-index: 1;
+      padding: 0 0.5rem;
     }
 
-    .node-label {
-      position: absolute;
-      bottom: calc(50% + 36px);
-      left: 50%;
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--text);
-      white-space: nowrap;
-      transform: rotate(-38deg);
-      transform-origin: 0 100%;
-      background: white;
-      padding: 0.35rem 0.9rem;
-      border-radius: 8px;
-      border: 1px solid var(--accent-border);
-      box-shadow: 0 4px 14px rgba(37,99,235,0.12);
-      letter-spacing: -0.01em;
-    }
-
-    .node-dot {
+    .s-dot {
       width: 52px;
       height: 52px;
       border-radius: 50%;
@@ -596,48 +859,32 @@
       border: 3px solid var(--accent);
       color: var(--accent);
       font-weight: 800;
-      font-size: 1.05rem;
+      font-size: 1rem;
       display: flex;
       align-items: center;
       justify-content: center;
       box-shadow: 0 6px 16px rgba(37,99,235,0.25);
+      margin-bottom: 0.8rem;
       position: relative;
       z-index: 2;
       transition: transform 0.2s;
     }
 
-    .timeline-node:hover .node-dot { transform: scale(1.08); }
+    .s-node:hover .s-dot { transform: scale(1.08); }
 
-    .node-desc {
-      margin-top: 1.5rem;
-      font-size: 0.82rem;
+    .s-label {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.01em;
+      margin-bottom: 0.25rem;
+    }
+
+    .s-desc {
+      font-size: 0.78rem;
       color: var(--text-muted);
-      text-align: center;
-      max-width: 180px;
       line-height: 1.5;
-    }
-
-    .timeline-hint {
-      position: absolute;
-      bottom: 1.5rem;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.72rem;
-      color: var(--text-subtle);
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      font-weight: 600;
-      pointer-events: none;
-    }
-
-    .timeline-hint svg { animation: hintSlide 1.6s ease-in-out infinite; }
-
-    @keyframes hintSlide {
-      0%, 100% { transform: translateX(0); opacity: 0.5; }
-      50% { transform: translateX(4px); opacity: 1; }
+      max-width: 180px;
     }
 
     /* ─── VALUE SECTION ─── */
@@ -686,34 +933,6 @@
     .stat-num.purple { color: var(--purple); }
 
     .stat-label { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
-
-    /* ─── INSURANCE ─── */
-    .insurance-section { background: #f0f6ff; padding: 96px 2rem; }
-    .insurance-inner { max-width: 1100px; margin: 0 auto; }
-
-    .insurance-cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.25rem;
-      margin-top: 3rem;
-    }
-
-    .insurance-card {
-      background: white;
-      border: 1px solid #d4e4fa;
-      border-radius: 14px;
-      padding: 1.75rem;
-      transition: box-shadow 0.2s, transform 0.2s;
-    }
-
-    .insurance-card:hover {
-      box-shadow: 0 8px 24px rgba(37,99,235,0.1);
-      transform: translateY(-2px);
-    }
-
-    .insurance-card .ic-icon { font-size: 1.6rem; margin-bottom: 1rem; }
-    .insurance-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: -0.01em; }
-    .insurance-card p  { font-size: 0.85rem; color: var(--text-muted); line-height: 1.65; }
 
     /* ─── COPAY CALCULATOR VISUAL ─── */
     .copay-section {
@@ -954,16 +1173,16 @@
       .value-section,
       .copay-inner { grid-template-columns: 1fr; gap: 2.5rem; }
 
-      /* mobile: timeline falls back to horizontal overflow-scroll, no sticky */
-      .timeline-section { height: auto; }
-      .timeline-sticky { position: relative; height: auto; }
-      .timeline-header { padding: 3rem 1.25rem 1.5rem; }
-      .timeline-viewport { overflow-x: auto; overflow-y: hidden; padding: 4rem 0 2rem; -webkit-overflow-scrolling: touch; }
-      .timeline-track { transform: none !important; padding: 0 1.5rem; gap: 5rem; }
-      .timeline-hint { display: none; }
+      /* mobile: serpentine collapses to vertical stack */
+      .timeline-section { padding: 64px 1.25rem; }
+      .timeline-header { margin-bottom: 2.5rem; }
+      .serpentine { grid-template-columns: 1fr; grid-template-rows: auto; row-gap: 2rem; }
+      .serpentine .s-node { grid-column: 1 !important; grid-row: auto !important; }
+      .serpentine-path { display: none; }
 
-      .insurance-cards,
-      .features-grid { grid-template-columns: 1fr; }
+      .features-bento { grid-template-columns: 1fr; grid-auto-rows: auto; }
+      .bento-card.feature { grid-column: 1; grid-row: auto; padding: 1.75rem; }
+      .bento-card.feature h3 { font-size: 1.3rem; }
 
       .cta-inner { padding: 40px 24px; }
 
@@ -979,11 +1198,13 @@
 
 <!-- ─── NAV ─── -->
 <nav id="nav">
-  <a href="#" class="nav-logo"><img src="logo.svg" alt="Grade" /></a>
+  <a href="#" class="nav-logo">
+    <img src="logo.svg" alt="Grade" />
+    <span class="nav-wordmark">Grade</span>
+  </a>
   <ul class="nav-links">
     <li><a href="#features">Features</a></li>
     <li><a href="#workflow">Workflow</a></li>
-    <li><a href="#insurance">Insurance</a></li>
   </ul>
   <div class="nav-cta">
     <a href="#waitlist" class="btn btn-primary">Join the waitlist</a>
@@ -993,7 +1214,6 @@
 <!-- ─── HERO ─── -->
 <section class="hero-section" id="waitlist">
   <canvas id="particle-canvas"></canvas>
-  <div class="hero-wordmark">GRADE</div>
 
   <div class="hero" id="hero-content">
     <div class="hero-badge">
@@ -1049,149 +1269,170 @@
   </div>
 </section>
 
-<!-- ─── FEATURES ─── -->
-<section class="section" id="features">
+<!-- ─── FEATURES (BENTO) ─── -->
+<section id="features">
   <div class="features-intro fade-up">
     <div class="section-label">Features</div>
     <h2 class="section-title">Everything automated.<br />Nothing missed.</h2>
     <p class="section-sub">Grade handles the parts of dentistry that eat your time — so you can focus on your patients.</p>
   </div>
 
-  <div class="features-grid fade-up">
-    <div class="feature-card">
-      <div class="feature-icon icon-blue">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <path d="M10 3a7 7 0 100 14A7 7 0 0010 3z" stroke="currentColor" stroke-width="1.5"/>
-          <path d="M8 9.5c0-.828.672-1.5 1.5-1.5h1a1.5 1.5 0 010 3h-1a1.5 1.5 0 000 3H10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          <path d="M10 7v1M10 13v1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <h3>AI Clinical Notes</h3>
-      <p>Grade listens while you work and writes structured clinical notes in real time. No more post-visit documentation. Walk out of the operatory and your chart is already done.</p>
-    </div>
+  <div class="features-wrap">
+    <div class="features-bento fade-up">
 
-    <div class="feature-card">
-      <div class="feature-icon icon-green">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <path d="M10 3L3 7v6l7 4 7-4V7L10 3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-          <path d="M10 3v14M3 7l7 4 7-4" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-        </svg>
+      <!-- Big: AI Clinical Notes -->
+      <div class="bento-card feature">
+        <div class="feature-icon icon-blue">
+          <svg width="22" height="22" viewBox="0 0 20 20" fill="none">
+            <path d="M4 3h9l3 3v11a1 1 0 01-1 1H4a1 1 0 01-1-1V4a1 1 0 011-1z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M13 3v3h3" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M6 10h8M6 13h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>AI Clinical Notes</h3>
+        <p>Grade listens while you work and writes structured clinical notes in real time. Walk out of the operatory — the chart is already done.</p>
+        <div class="notes-mockup" id="notes-mockup">
+          <div class="mock-window">
+            <div class="mock-title-bar">
+              <span class="mock-dot red"></span>
+              <span class="mock-dot yellow"></span>
+              <span class="mock-dot green"></span>
+              <span class="mock-filename">patient_chart.note</span>
+            </div>
+            <div class="mock-body">
+              <div class="mock-line"><span class="mock-label">CC:</span><span class="mock-text">Tooth pain, upper right quadrant</span></div>
+              <div class="mock-line"><span class="mock-label">HPI:</span><span class="mock-text">Sharp pain on cold stimulus, 3 days</span></div>
+              <div class="mock-line"><span class="mock-label">Dx:</span><span class="mock-text">Irreversible pulpitis, tooth #14</span></div>
+              <div class="mock-line"><span class="mock-label">Tx:</span><span class="mock-text">Endo consult scheduled<span class="mock-cursor"></span></span></div>
+            </div>
+          </div>
+        </div>
       </div>
-      <h3>Automatic Insurance Verification</h3>
-      <p>Coverage is verified before every appointment — no phone calls, no portals. Grade surfaces exactly what's covered and flags any issues before the patient arrives.</p>
-    </div>
 
-    <div class="feature-card">
-      <div class="feature-icon icon-teal">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <rect x="3" y="4" width="14" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/>
-          <path d="M7 3v2M13 3v2M3 9h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          <path d="M7 13h2M11 13h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
+      <!-- Insurance -->
+      <div class="bento-card">
+        <div class="feature-icon icon-green">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M10 3L3 7v6l7 4 7-4V7L10 3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M7 10l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3>Insurance Verification</h3>
+        <p>Coverage auto-checked before every appointment. No portals, no hold music.</p>
+        <div class="verified-badge">
+          <span class="dot"></span>
+          Verified · live
+        </div>
       </div>
-      <h3>Automated Billing & Claims</h3>
-      <p>From completed treatment to submitted claim in one step. Grade handles the coding, submission, and follow-up — so your front desk doesn't have to.</p>
-    </div>
 
-    <div class="feature-card">
-      <div class="feature-icon icon-purple">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/>
-          <path d="M10 6v4l3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+      <!-- Billing -->
+      <div class="bento-card">
+        <div class="feature-icon icon-teal">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <rect x="3" y="4" width="14" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M3 9h14" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M7 13h2M11 13h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>Billing & Claims</h3>
+        <p>Coded, submitted, and tracked — automatically.</p>
+        <div class="bill-flow">
+          <span class="bill-step done">Tx</span>
+          <svg class="bill-arrow" width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 4h10M8 1l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="bill-step done">Claim</span>
+          <svg class="bill-arrow" width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 4h10M8 1l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="bill-step">Paid</span>
+        </div>
       </div>
-      <h3>Coverage Intelligence</h3>
-      <p>Grade automatically calculates what each plan covers and what the patient owes — before you even pick up a handpiece. No billing surprises at checkout.</p>
-    </div>
 
-    <div class="feature-card">
-      <div class="feature-icon icon-orange">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <circle cx="8" cy="7" r="3" stroke="currentColor" stroke-width="1.5"/>
-          <path d="M3 17c0-2.761 2.239-5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          <circle cx="14" cy="13" r="3" stroke="currentColor" stroke-width="1.5"/>
-          <path d="M12 13h4M14 11v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
+      <!-- Coverage -->
+      <div class="bento-card">
+        <div class="feature-icon icon-purple">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M10 3a7 7 0 017 7h-7V3z" fill="currentColor" opacity="0.3"/>
+          </svg>
+        </div>
+        <h3>Coverage Intelligence</h3>
+        <p>Know who pays what — before treatment starts.</p>
+        <div class="cov-bar"><div class="cov-ins"></div><div class="cov-pat"></div></div>
+        <div class="cov-labels">
+          <span><b class="b-ins">80%</b> Insurance</span>
+          <span><b class="b-pat">20%</b> Patient</span>
+        </div>
       </div>
-      <h3>Patient & Family Management</h3>
-      <p>Complete patient records for every individual, with family relationships and shared insurance coverage properly modeled. Find anyone instantly by name.</p>
-    </div>
 
-    <div class="feature-card">
-      <div class="feature-icon icon-blue">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <path d="M10 3L3 8v9h5v-4h4v4h5V8L10 3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-        </svg>
+      <!-- Patient & Family -->
+      <div class="bento-card">
+        <div class="feature-icon icon-orange">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="7" cy="7" r="2.5" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="13" cy="7" r="2.5" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M2.5 16c0-2.5 2-4.5 4.5-4.5S11.5 13.5 11.5 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M8.5 16c0-2.5 2-4.5 4.5-4.5s4.5 2 4.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>Patient & Family</h3>
+        <p>Relationships and shared plans modeled properly.</p>
+        <div class="avatars">
+          <div class="avatar a1">JM</div>
+          <div class="avatar a2">AS</div>
+          <div class="avatar a3">RB</div>
+          <div class="avatar a4">KL</div>
+          <div class="avatar more">+4</div>
+        </div>
       </div>
-      <h3>Multi-Practice Support</h3>
-      <p>Manage multiple locations from one dashboard. Each practice has its own data, providers, and patients — but you see the full picture from a single login.</p>
+
+      <!-- Multi-Practice -->
+      <div class="bento-card">
+        <div class="feature-icon icon-blue">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M10 3L3 8v9h5v-4h4v4h5V8L10 3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3>Multi-Practice</h3>
+        <p>Run every location from one dashboard.</p>
+        <div class="locations">
+          <div class="loc-line"></div>
+          <span class="loc l1"></span>
+          <span class="loc l2"></span>
+          <span class="loc l3"></span>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
 
-<!-- ─── TIMELINE (scroll-driven horizontal) ─── -->
+<!-- ─── TIMELINE (serpentine) ─── -->
 <section class="timeline-section" id="workflow">
-  <div class="timeline-sticky">
-    <div class="timeline-header">
-      <div class="section-label">Patient Workflow</div>
-      <h2>Every visit tracked, start to finish</h2>
-      <p>Grade follows each patient through every stage — from intake to paid claim. Scroll to walk the timeline.</p>
-    </div>
+  <div class="timeline-header fade-up">
+    <div class="section-label">Patient Workflow</div>
+    <h2>Every visit tracked, start to finish</h2>
+    <p>Grade follows each patient through every stage — from intake to paid claim.</p>
+  </div>
 
-    <div class="timeline-viewport">
-      <div class="timeline-track" id="timeline-track">
-        <div class="timeline-node">
-          <div class="node-label">Intake</div>
-          <div class="node-dot">1</div>
-          <div class="node-desc">Patient record created, insurance pre-verified automatically</div>
-        </div>
-        <div class="timeline-node">
-          <div class="node-label">Scheduled</div>
-          <div class="node-dot">2</div>
-          <div class="node-desc">Appointment booked with the right provider and procedure</div>
-        </div>
-        <div class="timeline-node">
-          <div class="node-label">Confirmed</div>
-          <div class="node-dot">3</div>
-          <div class="node-desc">Confirmation received, reminders sent automatically</div>
-        </div>
-        <div class="timeline-node">
-          <div class="node-label">Checked In</div>
-          <div class="node-dot">4</div>
-          <div class="node-desc">Patient arrived — front desk notified instantly</div>
-        </div>
-        <div class="timeline-node">
-          <div class="node-label">In Treatment</div>
-          <div class="node-dot">5</div>
-          <div class="node-desc">AI begins capturing clinical notes in real time</div>
-        </div>
-        <div class="timeline-node">
-          <div class="node-label">Treatment Complete</div>
-          <div class="node-dot">6</div>
-          <div class="node-desc">Notes finalized, chart updated, provider ready to review</div>
-        </div>
-        <div class="timeline-node">
-          <div class="node-label">Billing</div>
-          <div class="node-dot">7</div>
-          <div class="node-desc">Coverage calculated, claim coded and ready to submit</div>
-        </div>
-        <div class="timeline-node">
-          <div class="node-label">Claim Submitted</div>
-          <div class="node-dot">8</div>
-          <div class="node-desc">Grade tracks the claim and follows up automatically</div>
-        </div>
-        <div class="timeline-node">
-          <div class="node-label">Closed</div>
-          <div class="node-dot">9</div>
-          <div class="node-desc">Payment collected, visit complete, records archived</div>
-        </div>
-      </div>
-    </div>
+  <div class="serpentine fade-up">
+    <svg class="serpentine-path" viewBox="0 0 1000 560" preserveAspectRatio="none">
+      <path d="M 60 82 H 910 Q 950 82 950 125 V 235 Q 950 278 910 278 H 90 Q 50 278 50 320 V 435 Q 50 478 90 478 H 940"
+            fill="none"
+            stroke="rgba(37,99,235,0.45)"
+            stroke-width="2.5"
+            stroke-dasharray="7 9"
+            stroke-linecap="round"/>
+    </svg>
 
-    <div class="timeline-hint">
-      Scroll
-      <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5h12M9 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </div>
+    <div class="s-node" style="grid-column:1;grid-row:1"><div class="s-dot">1</div><div class="s-label">Intake</div><div class="s-desc">Record created, insurance pre-verified</div></div>
+    <div class="s-node" style="grid-column:2;grid-row:1"><div class="s-dot">2</div><div class="s-label">Scheduled</div><div class="s-desc">Booked with the right provider</div></div>
+    <div class="s-node" style="grid-column:3;grid-row:1"><div class="s-dot">3</div><div class="s-label">Confirmed</div><div class="s-desc">Reminders sent automatically</div></div>
+
+    <div class="s-node" style="grid-column:3;grid-row:2"><div class="s-dot">4</div><div class="s-label">Checked In</div><div class="s-desc">Front desk notified instantly</div></div>
+    <div class="s-node" style="grid-column:2;grid-row:2"><div class="s-dot">5</div><div class="s-label">In Treatment</div><div class="s-desc">AI captures clinical notes live</div></div>
+    <div class="s-node" style="grid-column:1;grid-row:2"><div class="s-dot">6</div><div class="s-label">Complete</div><div class="s-desc">Chart updated, provider reviews</div></div>
+
+    <div class="s-node" style="grid-column:1;grid-row:3"><div class="s-dot">7</div><div class="s-label">Billing</div><div class="s-desc">Coverage calculated, claim coded</div></div>
+    <div class="s-node" style="grid-column:2;grid-row:3"><div class="s-dot">8</div><div class="s-label">Claim Sent</div><div class="s-desc">Grade tracks &amp; follows up</div></div>
+    <div class="s-node" style="grid-column:3;grid-row:3"><div class="s-dot">9</div><div class="s-label">Closed</div><div class="s-desc">Paid, complete, archived</div></div>
   </div>
 </section>
 
@@ -1292,35 +1533,6 @@
   </div>
 </section>
 
-<!-- ─── INSURANCE ─── -->
-<section class="insurance-section" id="insurance">
-  <div class="insurance-inner">
-    <div class="fade-up" style="max-width:600px">
-      <div class="section-label">Insurance</div>
-      <h2 class="section-title">Insurance that<br />works for you</h2>
-      <p class="section-sub">Grade removes the insurance burden from your front desk. Coverage is always verified, estimates are always accurate, and claims are always submitted correctly.</p>
-    </div>
-
-    <div class="insurance-cards fade-up">
-      <div class="insurance-card">
-        <div class="ic-icon">⚡</div>
-        <h3>Instant Eligibility</h3>
-        <p>Know exactly what each plan covers before the patient arrives. Grade checks eligibility automatically — no portal logins, no hold music.</p>
-      </div>
-      <div class="insurance-card">
-        <div class="ic-icon">👨‍👩‍👧</div>
-        <h3>Family Coverage</h3>
-        <p>Track who's covered under whose plan and who's responsible for the bill. Family relationships are built into every patient record.</p>
-      </div>
-      <div class="insurance-card">
-        <div class="ic-icon">🧮</div>
-        <h3>Smart Estimates</h3>
-        <p>Grade calculates the patient's exact out-of-pocket before treatment starts. No billing surprises — for you or for them.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ─── CTA ─── -->
 <section class="cta-section fade-up">
   <div class="cta-inner">
@@ -1352,7 +1564,10 @@
 
 <!-- ─── FOOTER ─── -->
 <footer>
-  <div class="footer-logo"><img src="logo.svg" alt="Grade" /></div>
+  <div class="footer-logo">
+    <img src="logo.svg" alt="Grade" />
+    <span class="footer-wordmark">Grade</span>
+  </div>
   <ul class="footer-links">
     <li><a href="#">Privacy</a></li>
     <li><a href="#">Terms</a></li>
@@ -1564,32 +1779,22 @@
   const copayEl = document.getElementById('copay-visual');
   if (copayEl) copayObserver.observe(copayEl);
 
-  // ─── HORIZONTAL TIMELINE (scroll-driven) ─────────────────────────────────────
+  // ─── SOAP NOTE TYPING (AI Clinical Notes bento card) ─────────────────────────
   (function () {
-    const section = document.querySelector('.timeline-section');
-    const track   = document.getElementById('timeline-track');
-    if (!section || !track) return;
-
-    let ticking = false;
-    function update() {
-      if (window.innerWidth <= 768) { track.style.transform = ''; return; }
-      const rect = section.getBoundingClientRect();
-      const scrollable = rect.height - window.innerHeight;
-      if (scrollable <= 0) return;
-      const progress = Math.max(0, Math.min(1, -rect.top / scrollable));
-      const maxTranslate = Math.max(0, track.scrollWidth - window.innerWidth);
-      track.style.transform = `translate3d(${-progress * maxTranslate}px, 0, 0)`;
+    const mock = document.getElementById('notes-mockup');
+    if (!mock) return;
+    const lines = mock.querySelectorAll('.mock-line');
+    function play() {
+      lines.forEach(l => l.classList.remove('revealed'));
+      lines.forEach((l, i) => {
+        l.style.animationDelay = (0.25 + i * 0.55) + 's';
+        l.classList.add('revealed');
+      });
     }
-
-    function onScroll() {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => { update(); ticking = false; });
-    }
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
-    update();
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) play(); });
+    }, { threshold: 0.35 });
+    obs.observe(mock);
   })();
 
   // ─── SCROLL ANIMATIONS ───────────────────────────────────────────────────────
