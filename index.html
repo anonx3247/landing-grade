@@ -31,6 +31,7 @@
       --purple-light: #f5f3ff;
       --orange: #ea580c;
       --orange-light: #fff7ed;
+      --hero-bg: #070d1a;
     }
 
     html { scroll-behavior: smooth; }
@@ -53,20 +54,30 @@
       justify-content: space-between;
       padding: 0 2rem;
       height: 60px;
-      background: rgba(255,255,255,0.88);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border-subtle);
+      background: rgba(7, 13, 26, 0.75);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      transition: background 0.3s, border-color 0.3s;
+    }
+
+    nav.scrolled {
+      background: rgba(255,255,255,0.9);
+      border-bottom-color: var(--border-subtle);
     }
 
     .nav-logo {
       font-size: 1.2rem;
       font-weight: 700;
       letter-spacing: -0.03em;
-      color: var(--text);
+      color: white;
       text-decoration: none;
+      transition: color 0.3s;
     }
 
-    .nav-logo span { color: var(--accent); }
+    nav.scrolled .nav-logo { color: var(--text); }
+
+    .nav-logo span { color: #60a5fa; }
+    nav.scrolled .nav-logo span { color: var(--accent); }
 
     .nav-links {
       display: flex;
@@ -78,18 +89,16 @@
     .nav-links a {
       font-size: 0.875rem;
       font-weight: 500;
-      color: var(--text-muted);
+      color: rgba(255,255,255,0.65);
       text-decoration: none;
       transition: color 0.15s;
     }
 
-    .nav-links a:hover { color: var(--text); }
+    nav.scrolled .nav-links a { color: var(--text-muted); }
+    .nav-links a:hover { color: white; }
+    nav.scrolled .nav-links a:hover { color: var(--text); }
 
-    .nav-cta {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
+    .nav-cta { display: flex; align-items: center; gap: 0.75rem; }
 
     /* ─── BUTTONS ─── */
     .btn {
@@ -106,25 +115,115 @@
       border: none;
     }
 
-    .btn-primary {
-      background: var(--accent);
-      color: #fff;
-    }
-
+    .btn-primary { background: var(--accent); color: #fff; }
     .btn-primary:hover {
       background: var(--accent-hover);
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+      box-shadow: 0 4px 12px rgba(37,99,235,0.35);
     }
 
-    .btn-ghost {
-      background: transparent;
-      color: var(--text-muted);
+    /* ─── HERO SECTION ─── */
+    .hero-section {
+      position: relative;
+      background: var(--hero-bg);
+      overflow: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
-    .btn-ghost:hover {
-      background: var(--bg-muted);
-      color: var(--text);
+    #particle-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .hero {
+      position: relative;
+      z-index: 2;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 2rem 80px;
+      max-width: 800px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* staggered entrance */
+    .hero > * {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+
+    .hero.loaded > * { animation: heroIn 0.7s cubic-bezier(0.22,1,0.36,1) forwards; }
+    .hero.loaded > *:nth-child(1) { animation-delay: 0.1s; }
+    .hero.loaded > *:nth-child(2) { animation-delay: 0.22s; }
+    .hero.loaded > *:nth-child(3) { animation-delay: 0.34s; }
+    .hero.loaded > *:nth-child(4) { animation-delay: 0.46s; }
+
+    @keyframes heroIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.3rem 0.85rem;
+      background: rgba(96,165,250,0.12);
+      border: 1px solid rgba(96,165,250,0.3);
+      border-radius: 100px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #93c5fd;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 1.75rem;
+    }
+
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      background: #60a5fa;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+
+    .hero h1 {
+      font-size: clamp(2.6rem, 6.5vw, 4.25rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.08;
+      color: white;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, #60a5fa 0%, #34d399 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 1.125rem;
+      color: rgba(255,255,255,0.6);
+      max-width: 520px;
+      margin: 0 auto 2.5rem;
+      font-weight: 400;
+      line-height: 1.75;
     }
 
     /* ─── WAITLIST FORM ─── */
@@ -133,43 +232,42 @@
       flex-direction: column;
       align-items: center;
       gap: 0.875rem;
+      width: 100%;
     }
 
     .waitlist-form {
       display: flex;
       width: 100%;
       max-width: 460px;
-      gap: 0;
       border-radius: 12px;
-      border: 1.5px solid var(--border);
+      border: 1.5px solid rgba(255,255,255,0.15);
       overflow: hidden;
-      background: white;
+      background: rgba(255,255,255,0.07);
+      backdrop-filter: blur(8px);
       transition: border-color 0.15s, box-shadow 0.15s;
     }
 
     .waitlist-form:focus-within {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 4px rgba(37,99,235,0.1);
+      border-color: rgba(96,165,250,0.6);
+      box-shadow: 0 0 0 4px rgba(96,165,250,0.1);
     }
 
     .waitlist-form input[type="email"] {
       flex: 1;
-      padding: 0.75rem 1rem;
+      padding: 0.8rem 1rem;
       border: none;
       outline: none;
       font-size: 0.9rem;
       font-family: inherit;
-      color: var(--text);
+      color: white;
       background: transparent;
     }
 
-    .waitlist-form input[type="email"]::placeholder {
-      color: var(--text-subtle);
-    }
+    .waitlist-form input[type="email"]::placeholder { color: rgba(255,255,255,0.35); }
 
     .waitlist-form button {
-      padding: 0.75rem 1.25rem;
-      background: var(--accent);
+      padding: 0.8rem 1.25rem;
+      background: #2563eb;
       color: white;
       border: none;
       font-size: 0.875rem;
@@ -183,16 +281,24 @@
       gap: 0.4rem;
     }
 
-    .waitlist-form button:hover { background: var(--accent-hover); }
+    .waitlist-form button:hover { background: #1d4ed8; }
+    .waitlist-form button:disabled { background: rgba(255,255,255,0.2); cursor: not-allowed; }
 
-    .waitlist-form button:disabled {
-      background: var(--text-subtle);
-      cursor: not-allowed;
+    /* light bg variant (CTA section) */
+    .waitlist-form.light {
+      border-color: rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.06);
     }
+    .waitlist-form.light:focus-within {
+      border-color: rgba(255,255,255,0.5);
+      box-shadow: 0 0 0 4px rgba(255,255,255,0.08);
+    }
+    .waitlist-form.light button { background: white; color: var(--accent); }
+    .waitlist-form.light button:hover { background: #f0f9ff; }
 
     .waitlist-counter {
-      font-size: 0.825rem;
-      color: var(--text-muted);
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.45);
       display: flex;
       align-items: center;
       gap: 0.4rem;
@@ -201,15 +307,13 @@
     .counter-pulse {
       width: 7px;
       height: 7px;
-      background: var(--green);
+      background: #34d399;
       border-radius: 50%;
       animation: pulse 2s infinite;
+      flex-shrink: 0;
     }
 
-    .counter-num {
-      font-weight: 700;
-      color: var(--text);
-    }
+    .counter-num { font-weight: 700; color: rgba(255,255,255,0.85); }
 
     .waitlist-success {
       display: none;
@@ -224,119 +328,43 @@
     .success-check {
       width: 44px;
       height: 44px;
-      background: var(--green-light);
+      background: rgba(52,211,153,0.15);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--green);
+      color: #34d399;
     }
 
-    .success-title {
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--text);
-    }
+    .success-title { font-size: 1rem; font-weight: 700; color: white; }
+    .success-sub { font-size: 0.85rem; color: rgba(255,255,255,0.5); }
 
-    .success-sub {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
-
-    /* dark-bg waitlist (CTA section) */
-    .waitlist-form.dark {
-      border-color: rgba(255,255,255,0.15);
-      background: rgba(255,255,255,0.06);
-    }
-
-    .waitlist-form.dark:focus-within {
-      border-color: rgba(255,255,255,0.5);
-      box-shadow: 0 0 0 4px rgba(255,255,255,0.08);
-    }
-
-    .waitlist-form.dark input[type="email"] {
-      color: white;
-    }
-
-    .waitlist-form.dark input[type="email"]::placeholder {
-      color: rgba(255,255,255,0.4);
-    }
-
-    .waitlist-form.dark button {
-      background: white;
-      color: var(--accent);
-    }
-
-    .waitlist-form.dark button:hover {
-      background: #f0f9ff;
-    }
-
-    /* ─── HERO ─── */
-    .hero {
-      padding: 140px 2rem 100px;
-      text-align: center;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    .hero-badge {
-      display: inline-flex;
+    /* ─── HERO TRUST STRIP (bottom of hero) ─── */
+    .hero-strip {
+      position: relative;
+      z-index: 2;
+      display: flex;
       align-items: center;
-      gap: 0.4rem;
-      padding: 0.3rem 0.8rem;
-      background: var(--accent-light);
-      border: 1px solid var(--accent-border);
-      border-radius: 100px;
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--accent);
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
-      margin-bottom: 1.75rem;
+      justify-content: center;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+      padding: 1.25rem 2rem 2rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
     }
 
-    .hero-badge-dot {
-      width: 6px;
-      height: 6px;
-      background: var(--accent);
-      border-radius: 50%;
-      animation: pulse 2s infinite;
+    .hero-strip-item {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.4);
+      font-weight: 500;
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
-    }
+    .hero-strip-item svg { color: #34d399; flex-shrink: 0; }
 
-    .hero h1 {
-      font-size: clamp(2.5rem, 6vw, 4rem);
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      line-height: 1.1;
-      color: var(--text);
-      margin-bottom: 1.5rem;
-    }
-
-    .hero h1 em {
-      font-style: normal;
-      background: linear-gradient(135deg, #2563eb 0%, #0891b2 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .hero-sub {
-      font-size: 1.15rem;
-      color: var(--text-muted);
-      max-width: 540px;
-      margin: 0 auto 2.5rem;
-      font-weight: 400;
-      line-height: 1.7;
-    }
-
-    /* ─── TRUST STRIP ─── */
+    /* ─── TRUST STRIP (after hero) ─── */
     .trust-strip {
-      border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
       padding: 1.25rem 2rem;
       display: flex;
@@ -344,6 +372,7 @@
       justify-content: center;
       gap: 3rem;
       flex-wrap: wrap;
+      background: var(--bg-subtle);
     }
 
     .trust-item {
@@ -355,12 +384,7 @@
       font-weight: 500;
     }
 
-    .trust-icon {
-      width: 16px;
-      height: 16px;
-      color: var(--green);
-      flex-shrink: 0;
-    }
+    .trust-icon { width: 16px; height: 16px; color: var(--green); flex-shrink: 0; }
 
     /* ─── SECTION ─── */
     .section {
@@ -395,10 +419,7 @@
     }
 
     /* ─── FEATURES GRID ─── */
-    .features-intro {
-      max-width: 600px;
-      margin-bottom: 3.5rem;
-    }
+    .features-intro { max-width: 600px; margin-bottom: 3.5rem; }
 
     .features-grid {
       display: grid;
@@ -410,12 +431,7 @@
       overflow: hidden;
     }
 
-    .feature-card {
-      background: var(--bg);
-      padding: 2rem;
-      transition: background 0.15s;
-    }
-
+    .feature-card { background: var(--bg); padding: 2rem; transition: background 0.15s; }
     .feature-card:hover { background: var(--bg-subtle); }
 
     .feature-icon {
@@ -435,24 +451,11 @@
     .icon-purple { background: var(--purple-light);  color: var(--purple); }
     .icon-orange { background: var(--orange-light);  color: var(--orange); }
 
-    .feature-card h3 {
-      font-size: 1rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      margin-bottom: 0.5rem;
-    }
-
-    .feature-card p {
-      font-size: 0.875rem;
-      color: var(--text-muted);
-      line-height: 1.65;
-    }
+    .feature-card h3 { font-size: 1rem; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 0.5rem; }
+    .feature-card p { font-size: 0.875rem; color: var(--text-muted); line-height: 1.65; }
 
     /* ─── WORKFLOW SECTION ─── */
-    .workflow-section {
-      background: var(--bg-subtle);
-      padding: 96px 2rem;
-    }
+    .workflow-section { background: var(--bg-subtle); padding: 96px 2rem; }
 
     .workflow-inner {
       max-width: 1100px;
@@ -463,10 +466,7 @@
       align-items: center;
     }
 
-    .workflow-stages {
-      display: flex;
-      flex-direction: column;
-    }
+    .workflow-stages { display: flex; flex-direction: column; }
 
     .stage {
       display: flex;
@@ -484,32 +484,18 @@
     .stage:hover { background: var(--bg-muted); }
 
     .stage-num {
-      width: 26px;
-      height: 26px;
+      width: 26px; height: 26px;
       border-radius: 50%;
       background: var(--accent-light);
       color: var(--accent);
       font-size: 0.7rem;
       font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      margin-top: 1px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
     }
 
-    .stage-info h4 {
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 0.2rem;
-    }
-
-    .stage-info p {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      line-height: 1.5;
-    }
+    .stage-info h4 { font-size: 0.9rem; font-weight: 600; color: var(--text); margin-bottom: 0.2rem; }
+    .stage-info p  { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
 
     /* ─── VALUE SECTION ─── */
     .value-section {
@@ -522,11 +508,7 @@
       align-items: center;
     }
 
-    .value-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
+    .value-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 
     .stat-card {
       background: var(--bg-subtle);
@@ -536,12 +518,8 @@
     }
 
     .stat-num {
-      font-size: 2rem;
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      color: var(--text);
-      line-height: 1;
-      margin-bottom: 0.4rem;
+      font-size: 2rem; font-weight: 800; letter-spacing: -0.04em;
+      color: var(--text); line-height: 1; margin-bottom: 0.4rem;
     }
 
     .stat-num.blue   { color: var(--accent); }
@@ -549,22 +527,11 @@
     .stat-num.green  { color: var(--green); }
     .stat-num.purple { color: var(--purple); }
 
-    .stat-label {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
+    .stat-label { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
 
     /* ─── INSURANCE ─── */
-    .insurance-section {
-      background: var(--bg-subtle);
-      padding: 96px 2rem;
-    }
-
-    .insurance-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-    }
+    .insurance-section { background: var(--bg-subtle); padding: 96px 2rem; }
+    .insurance-inner { max-width: 1100px; margin: 0 auto; }
 
     .insurance-cards {
       display: grid;
@@ -586,29 +553,12 @@
       transform: translateY(-2px);
     }
 
-    .insurance-card .ic-icon {
-      font-size: 1.6rem;
-      margin-bottom: 1rem;
-    }
-
-    .insurance-card h3 {
-      font-size: 1rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-      letter-spacing: -0.01em;
-    }
-
-    .insurance-card p {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      line-height: 1.65;
-    }
+    .insurance-card .ic-icon { font-size: 1.6rem; margin-bottom: 1rem; }
+    .insurance-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: -0.01em; }
+    .insurance-card p  { font-size: 0.85rem; color: var(--text-muted); line-height: 1.65; }
 
     /* ─── CTA SECTION ─── */
-    .cta-section {
-      padding: 100px 2rem;
-      text-align: center;
-    }
+    .cta-section { padding: 100px 2rem; text-align: center; }
 
     .cta-inner {
       max-width: 680px;
@@ -634,18 +584,8 @@
       line-height: 1.7;
     }
 
-    .cta-inner .waitlist-wrap { align-items: center; }
-
-    .cta-inner .waitlist-counter {
-      color: rgba(255,255,255,0.55);
-    }
-
-    .cta-inner .waitlist-counter .counter-num {
-      color: rgba(255,255,255,0.9);
-    }
-
-    .cta-inner .waitlist-success .success-title { color: white; }
-    .cta-inner .waitlist-success .success-sub { color: rgba(255,255,255,0.65); }
+    .cta-inner .waitlist-counter { color: rgba(255,255,255,0.45); justify-content: center; }
+    .cta-inner .waitlist-counter .counter-num { color: rgba(255,255,255,0.9); }
 
     /* ─── FOOTER ─── */
     footer {
@@ -660,78 +600,43 @@
       gap: 1rem;
     }
 
-    .footer-logo {
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--text);
-      letter-spacing: -0.03em;
-    }
-
+    .footer-logo { font-size: 1rem; font-weight: 700; color: var(--text); letter-spacing: -0.03em; }
     .footer-logo span { color: var(--accent); }
 
-    .footer-links {
-      display: flex;
-      gap: 1.5rem;
-      list-style: none;
-    }
-
-    .footer-links a {
-      font-size: 0.825rem;
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: color 0.15s;
-    }
-
+    .footer-links { display: flex; gap: 1.5rem; list-style: none; }
+    .footer-links a { font-size: 0.825rem; color: var(--text-muted); text-decoration: none; transition: color 0.15s; }
     .footer-links a:hover { color: var(--text); }
 
-    .footer-copy {
-      font-size: 0.78rem;
-      color: var(--text-subtle);
-    }
+    .footer-copy { font-size: 0.78rem; color: var(--text-subtle); }
 
-    /* ─── ANIMATIONS ─── */
+    /* ─── SCROLL ANIMATIONS ─── */
     .fade-up {
       opacity: 0;
       transform: translateY(20px);
-      transition: opacity 0.5s ease, transform 0.5s ease;
+      transition: opacity 0.55s ease, transform 0.55s ease;
     }
 
-    .fade-up.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
 
     /* ─── RESPONSIVE ─── */
     @media (max-width: 768px) {
       nav { padding: 0 1.25rem; }
       .nav-links { display: none; }
-      .hero { padding: 100px 1.25rem 60px; }
+      .hero { padding: 100px 1.25rem 64px; }
       .section { padding: 64px 1.25rem; }
+      .hero-strip { gap: 1rem; padding: 1rem 1.25rem 1.5rem; }
 
       .workflow-inner,
-      .value-section {
-        grid-template-columns: 1fr;
-        gap: 2.5rem;
-      }
+      .value-section { grid-template-columns: 1fr; gap: 2.5rem; }
 
       .insurance-cards,
-      .features-grid {
-        grid-template-columns: 1fr;
-      }
+      .features-grid { grid-template-columns: 1fr; }
 
       .cta-inner { padding: 40px 24px; }
 
-      footer {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 2rem 1.25rem;
-      }
+      footer { flex-direction: column; align-items: flex-start; padding: 2rem 1.25rem; }
 
-      .trust-strip {
-        gap: 1.25rem;
-        justify-content: flex-start;
-        padding: 1.25rem;
-      }
+      .trust-strip { gap: 1.25rem; justify-content: flex-start; padding: 1.25rem; }
 
       .waitlist-form { max-width: 100%; }
     }
@@ -740,7 +645,7 @@
 <body>
 
 <!-- ─── NAV ─── -->
-<nav>
+<nav id="nav">
   <a href="#" class="nav-logo">Grade<span>.</span></a>
   <ul class="nav-links">
     <li><a href="#features">Features</a></li>
@@ -753,58 +658,62 @@
 </nav>
 
 <!-- ─── HERO ─── -->
-<section class="hero" id="waitlist">
-  <div class="hero-badge">
-    <div class="hero-badge-dot"></div>
-    Coming soon
-  </div>
-  <h1>Your practice,<br /><em>running itself</em></h1>
-  <p class="hero-sub">
-    Grade is an AI-powered dental practice management system. It writes your clinical notes, verifies insurance, handles billing, and tracks every patient — automatically.
-  </p>
+<section class="hero-section" id="waitlist">
+  <canvas id="particle-canvas"></canvas>
 
-  <!-- HERO WAITLIST FORM -->
-  <div class="waitlist-wrap" id="hero-waitlist">
-    <form class="waitlist-form" id="hero-form">
-      <input type="email" name="email" placeholder="Enter your work email" required autocomplete="email" />
-      <button type="submit">
-        Join the waitlist
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-    </form>
-    <div class="waitlist-counter">
-      <div class="counter-pulse"></div>
-      <span class="counter-num" id="hero-count">0</span>&nbsp;dental professionals already on the list
+  <div class="hero" id="hero-content">
+    <div class="hero-badge">
+      <div class="hero-badge-dot"></div>
+      Coming soon
     </div>
-    <div class="waitlist-success" id="hero-success">
-      <div class="success-check">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+    <h1>Your practice,<br /><em>running itself</em></h1>
+
+    <p class="hero-sub">
+      Grade is an AI-powered dental practice management system. It writes your clinical notes, verifies insurance, handles billing, and tracks every patient — automatically.
+    </p>
+
+    <div class="waitlist-wrap" id="hero-waitlist">
+      <form class="waitlist-form" id="hero-form">
+        <input type="email" name="email" placeholder="Enter your work email" required autocomplete="email" />
+        <button type="submit">
+          Join the waitlist
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </form>
+      <div class="waitlist-counter">
+        <div class="counter-pulse"></div>
+        <span class="counter-num" id="hero-count">—</span>&nbsp;dental professionals already on the list
       </div>
-      <div class="success-title">You're on the list!</div>
-      <div class="success-sub">We'll reach out as soon as Grade is ready for early access.</div>
+      <div class="waitlist-success" id="hero-success">
+        <div class="success-check">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="success-title">You're on the list!</div>
+        <div class="success-sub">We'll reach out as soon as Grade is ready for early access.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-strip">
+    <div class="hero-strip-item">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M11.5 3.5L5.5 9.5 2.5 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      AI clinical note generation
+    </div>
+    <div class="hero-strip-item">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M11.5 3.5L5.5 9.5 2.5 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Instant insurance verification
+    </div>
+    <div class="hero-strip-item">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M11.5 3.5L5.5 9.5 2.5 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Automated billing & claims
+    </div>
+    <div class="hero-strip-item">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M11.5 3.5L5.5 9.5 2.5 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Multi-practice ready
     </div>
   </div>
 </section>
-
-<!-- ─── TRUST STRIP ─── -->
-<div class="trust-strip">
-  <div class="trust-item">
-    <svg class="trust-icon" viewBox="0 0 16 16" fill="none"><path d="M13 4L6.5 10.5 3 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    AI clinical note generation
-  </div>
-  <div class="trust-item">
-    <svg class="trust-icon" viewBox="0 0 16 16" fill="none"><path d="M13 4L6.5 10.5 3 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Instant insurance verification
-  </div>
-  <div class="trust-item">
-    <svg class="trust-icon" viewBox="0 0 16 16" fill="none"><path d="M13 4L6.5 10.5 3 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Automated billing & claims
-  </div>
-  <div class="trust-item">
-    <svg class="trust-icon" viewBox="0 0 16 16" fill="none"><path d="M13 4L6.5 10.5 3 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Multi-practice ready
-  </div>
-</div>
 
 <!-- ─── FEATURES ─── -->
 <section class="section" id="features">
@@ -858,7 +767,7 @@
         </svg>
       </div>
       <h3>Coverage Intelligence</h3>
-      <p>Grade automatically calculates what each plan covers and what the patient owes — before you even pick up a handpiece. No more billing surprises at checkout.</p>
+      <p>Grade automatically calculates what each plan covers and what the patient owes — before you even pick up a handpiece. No billing surprises at checkout.</p>
     </div>
 
     <div class="feature-card">
@@ -871,7 +780,7 @@
         </svg>
       </div>
       <h3>Patient & Family Management</h3>
-      <p>Complete patient records for every individual, with family relationships and shared insurance coverage properly modeled. Find anyone instantly by name or record.</p>
+      <p>Complete patient records for every individual, with family relationships and shared insurance coverage properly modeled. Find anyone instantly by name.</p>
     </div>
 
     <div class="feature-card">
@@ -896,69 +805,15 @@
     </div>
 
     <div class="workflow-stages fade-up">
-      <div class="stage">
-        <div class="stage-num">1</div>
-        <div class="stage-info">
-          <h4>Intake</h4>
-          <p>Patient record created, insurance pre-verified automatically</p>
-        </div>
-      </div>
-      <div class="stage">
-        <div class="stage-num">2</div>
-        <div class="stage-info">
-          <h4>Scheduled</h4>
-          <p>Appointment booked with the right provider and procedure</p>
-        </div>
-      </div>
-      <div class="stage">
-        <div class="stage-num">3</div>
-        <div class="stage-info">
-          <h4>Confirmed</h4>
-          <p>Patient confirmation received, reminders sent automatically</p>
-        </div>
-      </div>
-      <div class="stage">
-        <div class="stage-num">4</div>
-        <div class="stage-info">
-          <h4>Checked In</h4>
-          <p>Patient arrived — front desk notified instantly</p>
-        </div>
-      </div>
-      <div class="stage">
-        <div class="stage-num">5</div>
-        <div class="stage-info">
-          <h4>In Treatment</h4>
-          <p>AI begins capturing clinical notes in real time</p>
-        </div>
-      </div>
-      <div class="stage">
-        <div class="stage-num">6</div>
-        <div class="stage-info">
-          <h4>Treatment Complete</h4>
-          <p>Notes finalized, chart updated, provider ready to review</p>
-        </div>
-      </div>
-      <div class="stage">
-        <div class="stage-num">7</div>
-        <div class="stage-info">
-          <h4>Billing</h4>
-          <p>Coverage calculated, claim coded and ready to submit</p>
-        </div>
-      </div>
-      <div class="stage">
-        <div class="stage-num">8</div>
-        <div class="stage-info">
-          <h4>Claim Submitted</h4>
-          <p>Grade tracks the claim and follows up automatically</p>
-        </div>
-      </div>
-      <div class="stage">
-        <div class="stage-num">9</div>
-        <div class="stage-info">
-          <h4>Closed</h4>
-          <p>Payment collected, visit complete, records archived</p>
-        </div>
-      </div>
+      <div class="stage"><div class="stage-num">1</div><div class="stage-info"><h4>Intake</h4><p>Patient record created, insurance pre-verified automatically</p></div></div>
+      <div class="stage"><div class="stage-num">2</div><div class="stage-info"><h4>Scheduled</h4><p>Appointment booked with the right provider and procedure</p></div></div>
+      <div class="stage"><div class="stage-num">3</div><div class="stage-info"><h4>Confirmed</h4><p>Patient confirmation received, reminders sent automatically</p></div></div>
+      <div class="stage"><div class="stage-num">4</div><div class="stage-info"><h4>Checked In</h4><p>Patient arrived — front desk notified instantly</p></div></div>
+      <div class="stage"><div class="stage-num">5</div><div class="stage-info"><h4>In Treatment</h4><p>AI begins capturing clinical notes in real time</p></div></div>
+      <div class="stage"><div class="stage-num">6</div><div class="stage-info"><h4>Treatment Complete</h4><p>Notes finalized, chart updated, provider ready to review</p></div></div>
+      <div class="stage"><div class="stage-num">7</div><div class="stage-info"><h4>Billing</h4><p>Coverage calculated, claim coded and ready to submit</p></div></div>
+      <div class="stage"><div class="stage-num">8</div><div class="stage-info"><h4>Claim Submitted</h4><p>Grade tracks the claim and follows up automatically</p></div></div>
+      <div class="stage"><div class="stage-num">9</div><div class="stage-info"><h4>Closed</h4><p>Payment collected, visit complete, records archived</p></div></div>
     </div>
   </div>
 </section>
@@ -968,9 +823,7 @@
   <div>
     <div class="section-label">Why Grade</div>
     <h2 class="section-title">Less admin.<br />More dentistry.</h2>
-    <p class="section-sub">
-      The average dental practice spends hours each day on tasks that should be automatic. Grade eliminates the paperwork, the phone calls, and the billing headaches — so your team can do the work that actually matters.
-    </p>
+    <p class="section-sub">The average dental practice spends hours each day on tasks that should be automatic. Grade eliminates the paperwork, the phone calls, and the billing headaches.</p>
     <div style="margin-top: 2rem; display: flex; flex-direction: column; gap: 0.75rem;">
       <div style="display:flex; align-items:center; gap: 0.625rem; font-size: 0.875rem; color: var(--text-muted);">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13 4L6.5 10.5 3 7" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -992,22 +845,10 @@
   </div>
 
   <div class="value-stats fade-up">
-    <div class="stat-card">
-      <div class="stat-num blue">2 hrs</div>
-      <div class="stat-label">Saved on documentation per provider daily</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num green">100%</div>
-      <div class="stat-label">Insurance verified before every appointment</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num teal">9</div>
-      <div class="stat-label">Stages tracked per patient visit</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num purple">0</div>
-      <div class="stat-label">Manual steps to submit a claim</div>
-    </div>
+    <div class="stat-card"><div class="stat-num blue">2 hrs</div><div class="stat-label">Saved on documentation per provider daily</div></div>
+    <div class="stat-card"><div class="stat-num green">100%</div><div class="stat-label">Insurance verified before every appointment</div></div>
+    <div class="stat-card"><div class="stat-num teal">9</div><div class="stat-label">Stages tracked per patient visit</div></div>
+    <div class="stat-card"><div class="stat-num purple">0</div><div class="stat-label">Manual steps to submit a claim</div></div>
   </div>
 </section>
 
@@ -1026,13 +867,11 @@
         <h3>Instant Eligibility</h3>
         <p>Know exactly what each plan covers before the patient arrives. Grade checks eligibility automatically — no portal logins, no hold music.</p>
       </div>
-
       <div class="insurance-card">
         <div class="ic-icon">👨‍👩‍👧</div>
         <h3>Family Coverage</h3>
         <p>Track who's covered under whose plan and who's responsible for the bill. Family relationships are built into every patient record.</p>
       </div>
-
       <div class="insurance-card">
         <div class="ic-icon">🧮</div>
         <h3>Smart Estimates</h3>
@@ -1049,7 +888,7 @@
     <p>We're building something dental practices have needed for a long time. Join the waitlist and get early access when we launch.</p>
 
     <div class="waitlist-wrap" id="cta-waitlist">
-      <form class="waitlist-form dark" id="cta-form">
+      <form class="waitlist-form light" id="cta-form">
         <input type="email" name="email" placeholder="Enter your work email" required autocomplete="email" />
         <button type="submit">
           Join the waitlist
@@ -1058,7 +897,7 @@
       </form>
       <div class="waitlist-counter">
         <div class="counter-pulse"></div>
-        <span class="counter-num" id="cta-count">0</span>&nbsp;dental professionals already on the list
+        <span class="counter-num" id="cta-count">—</span>&nbsp;dental professionals already on the list
       </div>
       <div class="waitlist-success" id="cta-success">
         <div class="success-check">
@@ -1083,57 +922,61 @@
 </footer>
 
 <script>
-  // ─── WAITLIST SEED ───────────────────────────────────────────────────────────
-  // Update SEED_COUNT manually as real signups come in via Formspree dashboard.
-  const SEED_COUNT = 0;
-
-  // ─── FORMSPREE ENDPOINT ──────────────────────────────────────────────────────
-  // 1. Create a free account at https://formspree.io
-  // 2. Create a new form and copy the form ID (looks like "xyzabcde")
-  // 3. Replace YOUR_FORM_ID below with your actual form ID
+  // ─── FORMSPREE ───────────────────────────────────────────────────────────────
   const FORMSPREE_ID = 'xkokjqev';
 
-  // ─── COUNTER ─────────────────────────────────────────────────────────────────
-  // localStorage tracks how many submissions happened in this browser session
-  // so the counter reflects both the seeded count and local submissions.
-  const localCount = parseInt(localStorage.getItem('grade_waitlist_count') || '0');
-  const displayCount = SEED_COUNT + localCount;
+  // ─── GLOBAL COUNTER via CountAPI ────────────────────────────────────────────
+  // Namespace is unique to this project. CountAPI is free, no auth required.
+  const COUNT_NS  = 'grade-landing';
+  const COUNT_KEY = 'waitlist-' + FORMSPREE_ID;
 
-  document.getElementById('hero-count').textContent = displayCount;
-  document.getElementById('cta-count').textContent  = displayCount;
-
-  function incrementCounter() {
-    const next = parseInt(localStorage.getItem('grade_waitlist_count') || '0') + 1;
-    localStorage.setItem('grade_waitlist_count', next);
-    const total = SEED_COUNT + next;
-    document.getElementById('hero-count').textContent = total;
-    document.getElementById('cta-count').textContent  = total;
+  function setCounterDisplays(n) {
+    const label = n === null ? '—' : n.toLocaleString();
+    document.getElementById('hero-count').textContent = label;
+    document.getElementById('cta-count').textContent  = label;
   }
 
-  // ─── FORM SUBMISSION ──────────────────────────────────────────────────────────
+  async function fetchCount() {
+    try {
+      const r = await fetch(`https://api.countapi.xyz/get/${COUNT_NS}/${COUNT_KEY}`);
+      const d = await r.json();
+      if (typeof d.value === 'number') setCounterDisplays(d.value);
+    } catch {}
+  }
+
+  async function hitCount() {
+    try {
+      const r = await fetch(`https://api.countapi.xyz/hit/${COUNT_NS}/${COUNT_KEY}`);
+      const d = await r.json();
+      if (typeof d.value === 'number') setCounterDisplays(d.value);
+    } catch {}
+  }
+
+  fetchCount();
+
+  // ─── FORM SUBMISSION ─────────────────────────────────────────────────────────
   async function handleSubmit(formEl, successEl) {
-    const btn = formEl.querySelector('button');
+    const btn   = formEl.querySelector('button');
     const email = formEl.querySelector('input[type="email"]').value;
 
-    btn.disabled = true;
+    btn.disabled    = true;
     btn.textContent = 'Sending…';
 
     try {
-      if (FORMSPREE_ID !== 'YOUR_FORM_ID') {
-        const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
-          method: 'POST',
-          headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email }),
-        });
-        if (!res.ok) throw new Error('Submission failed');
-      }
-      // Show success, hide form
+      const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+        method:  'POST',
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ email }),
+      });
+
+      if (!res.ok) throw new Error();
+
       formEl.style.display = 'none';
       formEl.closest('.waitlist-wrap').querySelector('.waitlist-counter').style.display = 'none';
       successEl.classList.add('shown');
-      incrementCounter();
+      hitCount();
     } catch {
-      btn.disabled = false;
+      btn.disabled    = false;
       btn.textContent = 'Try again';
     }
   }
@@ -1148,15 +991,98 @@
     handleSubmit(e.target, document.getElementById('cta-success'));
   });
 
-  // ─── SCROLL ANIMATIONS ────────────────────────────────────────────────────────
+  // ─── NAV SCROLL STYLE ────────────────────────────────────────────────────────
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > window.innerHeight * 0.8);
+  }, { passive: true });
+
+  // ─── HERO ENTRANCE ───────────────────────────────────────────────────────────
+  requestAnimationFrame(() => {
+    document.getElementById('hero-content').classList.add('loaded');
+  });
+
+  // ─── PARTICLE CANVAS ────────────────────────────────────────────────────────
+  (function () {
+    const canvas = document.getElementById('particle-canvas');
+    const ctx    = canvas.getContext('2d');
+    const section = canvas.parentElement;
+
+    let W, H, particles;
+
+    function resize() {
+      W = canvas.width  = section.offsetWidth;
+      H = canvas.height = section.offsetHeight;
+    }
+
+    function Particle() {
+      this.x  = Math.random() * W;
+      this.y  = Math.random() * H;
+      this.vx = (Math.random() - 0.5) * 0.35;
+      this.vy = (Math.random() - 0.5) * 0.35;
+      this.r  = Math.random() * 1.5 + 0.5;
+    }
+
+    Particle.prototype.update = function () {
+      this.x += this.vx;
+      this.y += this.vy;
+      if (this.x < 0 || this.x > W) this.vx *= -1;
+      if (this.y < 0 || this.y > H) this.vy *= -1;
+    };
+
+    function init() {
+      resize();
+      const count = Math.floor((W * H) / 12000);
+      particles = Array.from({ length: Math.min(count, 110) }, () => new Particle());
+    }
+
+    const MAX_DIST = 130;
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+
+        // dot
+        ctx.beginPath();
+        ctx.arc(particles[i].x, particles[i].y, particles[i].r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(148,180,255,0.55)';
+        ctx.fill();
+
+        // lines to neighbours
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx   = particles[i].x - particles[j].x;
+          const dy   = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < MAX_DIST) {
+            const alpha = (1 - dist / MAX_DIST) * 0.18;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(148,180,255,${alpha})`;
+            ctx.lineWidth   = 0.8;
+            ctx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('resize', () => { resize(); init(); }, { passive: true });
+
+    init();
+    draw();
+  })();
+
+  // ─── SCROLL ANIMATIONS ───────────────────────────────────────────────────────
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        observer.unobserve(e.target);
-      }
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
     });
-  }, { threshold: 0.12 });
+  }, { threshold: 0.1 });
 
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 </script>
